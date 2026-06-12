@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image Resizer - Image Tools Hub</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#0f172a,#1e293b);
+color:white;
+padding:20px;
+}
+
+.container{
+max-width:1000px;
+margin:auto;
+}
+
+.card{
+background:rgba(255,255,255,.08);
+backdrop-filter:blur(12px);
+padding:25px;
+border-radius:20px;
+}
+
+h1{
+text-align:center;
+margin-bottom:10px;
+}
+
+.subtitle{
+text-align:center;
+color:#cbd5e1;
+margin-bottom:25px;
+}
+
+.upload-box{
+height:150px;
+border:3px dashed #3b82f6;
+border-radius:20px;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+cursor:pointer;
+font-size:20px;
+font-weight:bold;
+margin-bottom:20px;
+}
+
+input[type=file]{
+display:none;
+}
+
+.controls{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+margin-bottom:20px;
+}
+
+.controls input{
+padding:12px;
+border:none;
+border-radius:10px;
+}
+
+.preview{
+background:#111827;
+padding:15px;
+border-radius:15px;
+text-align:center;
+margin-top:20px;
+}
+
+.preview img{
+max-width:100%;
+max-height:350px;
+object-fit:contain;
+}
+
+.btn{
+width:100%;
+padding:15px;
+margin-top:20px;
+border:none;
+border-radius:15px;
+cursor:pointer;
+font-size:18px;
+font-weight:bold;
+color:white;
+background:linear-gradient(90deg,#3b82f6,#8b5cf6);
+}
+
+@media(max-width:768px){
+.controls{
+grid-template-columns:1fr;
+}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>📏 Image Resizer</h1>
+<p class="subtitle">Resize Images Online For Free</p>
+
+<div class="card">
+
+<label class="upload-box">
+<div>
+📂 Upload Image
+<br><br>
+Choose Image To Resize
+</div>
+<input type="file" id="imageInput" accept="image/*">
+</label>
+
+<div class="controls">
+<input type="number" id="width" placeholder="Width (px)">
+<input type="number" id="height" placeholder="Height (px)">
+</div>
+
+<div class="preview">
+<img id="previewImage">
+</div>
+
+<button class="btn" id="resizeBtn">
+Resize & Download
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+const imageInput = document.getElementById("imageInput");
+const previewImage = document.getElementById("previewImage");
+const widthInput = document.getElementById("width");
+const heightInput = document.getElementById("height");
+const resizeBtn = document.getElementById("resizeBtn");
+
+let currentFile = null;
+
+imageInput.addEventListener("change", e => {
+
+const file = e.target.files[0];
+
+if(!file) return;
+
+currentFile = file;
+
+const reader = new FileReader();
+
+reader.onload = function(event){
+
+previewImage.src = event.target.result;
+
+};
+
+reader.readAsDataURL(file);
+
+});
+
+resizeBtn.addEventListener("click", () => {
+
+if(!currentFile){
+alert("Upload image first");
+return;
+}
+
+const width = parseInt(widthInput.value);
+const height = parseInt(heightInput.value);
+
+if(!width || !height){
+alert("Enter width and height");
+return;
+}
+
+const img = new Image();
+
+img.onload = function(){
+
+const canvas = document.createElement("canvas");
+
+canvas.width = width;
+canvas.height = height;
+
+const ctx = canvas.getContext("2d");
+
+ctx.drawImage(img,0,0,width,height);
+
+canvas.toBlob(blob => {
+
+const a = document.createElement("a");
+
+a.href = URL.createObjectURL(blob);
+
+a.download = "resized-image.png";
+
+a.click();
+
+});
+
+};
+
+img.src = URL.createObjectURL(currentFile);
+
+});
+
+</script>
+
+</body>
+</html>
