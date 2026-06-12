@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image Converter - Image Tools Hub</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#0f172a,#1e293b);
+color:white;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+}
+
+.card{
+background:rgba(255,255,255,.08);
+padding:25px;
+border-radius:20px;
+backdrop-filter:blur(12px);
+}
+
+h1{
+text-align:center;
+margin-bottom:10px;
+}
+
+.subtitle{
+text-align:center;
+color:#cbd5e1;
+margin-bottom:25px;
+}
+
+.upload-box{
+height:150px;
+border:3px dashed #3b82f6;
+border-radius:20px;
+display:flex;
+justify-content:center;
+align-items:center;
+text-align:center;
+cursor:pointer;
+font-size:20px;
+font-weight:bold;
+margin-bottom:20px;
+}
+
+input[type=file]{
+display:none;
+}
+
+.preview{
+background:#111827;
+padding:20px;
+border-radius:15px;
+text-align:center;
+margin-top:20px;
+}
+
+.preview img{
+max-width:100%;
+max-height:350px;
+object-fit:contain;
+}
+
+select{
+width:100%;
+padding:12px;
+border:none;
+border-radius:10px;
+margin-top:15px;
+}
+
+.btn{
+width:100%;
+padding:15px;
+margin-top:20px;
+border:none;
+border-radius:15px;
+font-size:18px;
+font-weight:bold;
+cursor:pointer;
+color:white;
+background:linear-gradient(90deg,#3b82f6,#8b5cf6);
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🔄 Image Converter</h1>
+<p class="subtitle">Convert JPG, PNG & WebP Images</p>
+
+<div class="card">
+
+<label class="upload-box">
+<div>
+📂 Upload Image
+<br><br>
+Choose Image To Convert
+</div>
+<input type="file" id="imageInput" accept="image/*">
+</label>
+
+<select id="formatSelect">
+<option value="image/png">Convert To PNG</option>
+<option value="image/jpeg">Convert To JPG</option>
+<option value="image/webp">Convert To WebP</option>
+</select>
+
+<div class="preview">
+<img id="previewImage">
+</div>
+
+<button class="btn" id="convertBtn">
+Convert & Download
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+const imageInput = document.getElementById("imageInput");
+const previewImage = document.getElementById("previewImage");
+const formatSelect = document.getElementById("formatSelect");
+const convertBtn = document.getElementById("convertBtn");
+
+let currentFile = null;
+
+imageInput.addEventListener("change", e => {
+
+const file = e.target.files[0];
+
+if(!file) return;
+
+currentFile = file;
+
+const reader = new FileReader();
+
+reader.onload = function(event){
+previewImage.src = event.target.result;
+};
+
+reader.readAsDataURL(file);
+
+});
+
+convertBtn.addEventListener("click", () => {
+
+if(!currentFile){
+alert("Upload image first");
+return;
+}
+
+const img = new Image();
+
+img.onload = function(){
+
+const canvas = document.createElement("canvas");
+
+canvas.width = img.width;
+canvas.height = img.height;
+
+const ctx = canvas.getContext("2d");
+
+ctx.drawImage(img,0,0);
+
+canvas.toBlob(blob => {
+
+const a = document.createElement("a");
+
+a.href = URL.createObjectURL(blob);
+
+let ext = "png";
+
+if(formatSelect.value === "image/jpeg"){
+ext = "jpg";
+}
+
+if(formatSelect.value === "image/webp"){
+ext = "webp";
+}
+
+a.download = "converted-image." + ext;
+
+a.click();
+
+}, formatSelect.value, 1);
+
+};
+
+img.src = URL.createObjectURL(currentFile);
+
+});
+
+</script>
+
+</body>
+</html>
