@@ -1,120 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ImageShrink Pro</title>
+<style>
+body{font-family:Arial,sans-serif;background:#0f172a;color:white;padding:20px}
+.container{max-width:1000px;margin:auto}
+.card{background:#1e293b;padding:25px;border-radius:20px}
+.upload-box{display:flex;align-items:center;justify-content:center;height:140px;border:2px dashed #60a5fa;border-radius:20px;cursor:pointer;text-align:center}
+input[type=file]{display:none}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px}
+.preview{background:#111827;padding:15px;border-radius:15px;text-align:center;min-height:300px}
+.preview img{max-width:100%;max-height:250px;object-fit:contain}
+.statwrap{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-top:20px}
+.stat{background:#111827;padding:15px;border-radius:15px;text-align:center}
+.download-btn{width:100%;padding:15px;margin-top:20px;border:none;border-radius:15px;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="container"><div class="card">
+<h1>ImageShrink Pro</h1>
+<label class="upload-box">Upload Image<input type="file" id="imageInput" accept="image/*"></label>
+<div class="slider-area"><label>Compression Quality: 70%</label><input type="range" min="10" max="100" value="70"></div>
+<div class="grid">
+<div class="preview"><h3>Before</h3><img id="beforeImage"></div>
+<div class="preview"><h3>After</h3><img id="afterImage"></div>
+</div>
+<div class="statwrap">
+<div class="stat"><p>0 KB</p></div>
+<div class="stat"><p>0 KB</p></div>
+<div class="stat"><p>0%</p></div>
+</div>
+<button class="download-btn">Download</button>
+</div></div>
 <script>
-
-const imageInput = document.getElementById("imageInput");
-const beforeImage = document.getElementById("beforeImage");
-const afterImage = document.getElementById("afterImage");
-
-const slider = document.querySelector("input[type=range]");
-const qualityLabel = document.querySelector(".slider-area label");
-
-const stats = document.querySelectorAll(".stat p");
-
-let compressedBlob = null;
-let currentImage = null;
-
-slider.addEventListener("input", () => {
-    qualityLabel.textContent =
-        "Compression Quality: " + slider.value + "%";
-
-    if(currentImage){
-        compressImage(currentImage);
-    }
+const imageInput=document.getElementById("imageInput");
+const beforeImage=document.getElementById("beforeImage");
+const afterImage=document.getElementById("afterImage");
+const slider=document.querySelector("input[type=range]");
+const qualityLabel=document.querySelector(".slider-area label");
+const stats=document.querySelectorAll(".stat p");
+let compressedBlob=null,currentImage=null;
+slider.addEventListener("input",()=>{
+qualityLabel.textContent="Compression Quality: "+slider.value+"%";
+if(currentImage) compressImage(currentImage);
 });
-
-imageInput.addEventListener("change", e => {
-
-    const file = e.target.files[0];
-
-    if(!file) return;
-
-    currentImage = file;
-
-    const reader = new FileReader();
-
-    reader.onload = function(event){
-
-        beforeImage.src = event.target.result;
-
-        compressImage(file);
-
-    };
-
-    reader.readAsDataURL(file);
-
+imageInput.addEventListener("change",e=>{
+const file=e.target.files[0]; if(!file) return;
+currentImage=file;
+const reader=new FileReader();
+reader.onload=ev=>{beforeImage.src=ev.target.result;compressImage(file);};
+reader.readAsDataURL(file);
 });
-
 function compressImage(file){
-
-    const quality = slider.value / 100;
-
-    const img = new Image();
-
-    img.onload = function(){
-
-        const canvas = document.createElement("canvas");
-
-        canvas.width = img.width;
-        canvas.height = img.height;
-
-        const ctx = canvas.getContext("2d");
-
-        ctx.drawImage(img,0,0);
-
-        canvas.toBlob(blob => {
-
-            compressedBlob = blob;
-
-            const compressedURL =
-                URL.createObjectURL(blob);
-
-            afterImage.src = compressedURL;
-
-            const originalKB =
-                (file.size / 1024).toFixed(2);
-
-            const compressedKB =
-                (blob.size / 1024).toFixed(2);
-
-            const saved =
-                (
-                    ((file.size - blob.size)
-                    / file.size) * 100
-                ).toFixed(1);
-
-            stats[0].textContent =
-                originalKB + " KB";
-
-            stats[1].textContent =
-                compressedKB + " KB";
-
-            stats[2].textContent =
-                saved + "%";
-
-        },"image/jpeg",quality);
-
-    };
-
-    img.src = URL.createObjectURL(file);
-
+const quality=slider.value/100;
+const img=new Image();
+img.onload=function(){
+const canvas=document.createElement("canvas");
+canvas.width=img.width; canvas.height=img.height;
+canvas.getContext("2d").drawImage(img,0,0);
+canvas.toBlob(blob=>{
+compressedBlob=blob;
+afterImage.src=URL.createObjectURL(blob);
+stats[0].textContent=(file.size/1024).toFixed(2)+" KB";
+stats[1].textContent=(blob.size/1024).toFixed(2)+" KB";
+stats[2].textContent=(((file.size-blob.size)/file.size)*100).toFixed(1)+"%";
+}, file.type || "image/jpeg", quality);
+};
+img.src=URL.createObjectURL(file);
 }
-
-document.querySelector(".download-btn")
-.addEventListener("click", () => {
-
-    if(!compressedBlob){
-        alert("Upload image first");
-        return;
-    }
-
-    const a = document.createElement("a");
-
-    a.href =
-        URL.createObjectURL(compressedBlob);
-
-    a.download = "compressed-image.jpg";
-
-    a.click();
-
+document.querySelector(".download-btn").addEventListener("click",()=>{
+if(!compressedBlob){alert("Upload image first");return;}
+const a=document.createElement("a");
+a.href=URL.createObjectURL(compressedBlob);
+a.download="compressed-image";
+a.click();
 });
-
 </script>
+</body></html>
