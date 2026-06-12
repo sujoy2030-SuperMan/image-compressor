@@ -1,0 +1,205 @@
+/* Global */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#0f172a,#1e293b);
+color:white;
+min-height:100vh;
+padding:20px;
+}
+
+.container{
+max-width:1100px;
+margin:auto;
+}
+
+h1{
+text-align:center;
+margin-bottom:10px;
+font-size:42px;
+}
+
+.subtitle{
+text-align:center;
+color:#cbd5e1;
+margin-bottom:25px;
+}
+
+/* Card */
+.card{
+background:rgba(255,255,255,.08);
+backdrop-filter:blur(12px);
+padding:25px;
+border-radius:20px;
+border:1px solid rgba(255,255,255,.08);
+}
+
+/* Upload */
+.upload-box{
+height:160px;
+border:3px dashed #3b82f6;
+border-radius:20px;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+cursor:pointer;
+font-size:20px;
+font-weight:bold;
+margin-bottom:20px;
+transition:.3s;
+}
+
+.upload-box:hover{
+background:rgba(59,130,246,.08);
+transform:translateY(-2px);
+}
+
+input[type=file]{
+display:none;
+}
+
+/* Slider */
+.slider-area{
+margin:20px 0;
+}
+
+.slider-area label{
+display:block;
+margin-bottom:10px;
+font-size:18px;
+font-weight:600;
+}
+
+input[type=range]{
+width:100%;
+cursor:pointer;
+}
+
+/* Grid */
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+margin-top:20px;
+}
+
+/* Preview */
+.preview{
+background:#111827;
+padding:15px;
+border-radius:15px;
+text-align:center;
+min-height:300px;
+}
+
+.preview h2,
+.preview h3{
+margin-bottom:15px;
+}
+
+.preview img{
+max-width:100%;
+max-height:260px;
+object-fit:contain;
+border-radius:10px;
+}
+
+/* Stats */
+.stats{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:15px;
+margin-top:20px;
+}
+
+.stat{
+background:#111827;
+padding:15px;
+border-radius:15px;
+text-align:center;
+border:1px solid rgba(255,255,255,.05);
+}
+
+.stat h3{
+margin-bottom:10px;
+font-size:15px;
+color:#cbd5e1;
+}
+
+.stat p{
+font-size:22px;
+font-weight:bold;
+}
+
+/* Inputs */
+.controls{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+margin-bottom:20px;
+}
+
+.controls input,
+select{
+width:100%;
+padding:12px;
+border:none;
+border-radius:10px;
+font-size:16px;
+}
+
+/* Buttons */
+.btn,
+.download-btn{
+width:100%;
+padding:15px;
+margin-top:20px;
+border:none;
+border-radius:15px;
+cursor:pointer;
+font-size:18px;
+font-weight:bold;
+color:white;
+background:linear-gradient(90deg,#3b82f6,#8b5cf6);
+transition:.3s;
+}
+
+.btn:hover,
+.download-btn:hover{
+transform:translateY(-2px);
+opacity:.95;
+}
+
+/* Footer */
+footer{
+text-align:center;
+padding:30px;
+color:#94a3b8;
+}
+
+/* Mobile */
+@media(max-width:768px){
+
+.grid{
+grid-template-columns:1fr;
+}
+
+.stats{
+grid-template-columns:1fr;
+}
+
+.controls{
+grid-template-columns:1fr;
+}
+
+h1{
+font-size:32px;
+}
+
+}
