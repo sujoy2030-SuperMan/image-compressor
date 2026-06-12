@@ -49,6 +49,45 @@ imageInput.addEventListener("change", e => {
     reader.readAsDataURL(file);
 
 });
+const uploadBox = document.querySelector(".upload-box");
+
+["dragenter", "dragover"].forEach(eventName => {
+    uploadBox.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        uploadBox.style.background = "rgba(59,130,246,.15)";
+    });
+});
+
+["dragleave", "drop"].forEach(eventName => {
+    uploadBox.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        uploadBox.style.background = "";
+    });
+});
+
+uploadBox.addEventListener("drop", (e) => {
+
+    e.preventDefault();
+
+    const file = e.dataTransfer.files[0];
+
+    if (!file || !file.type.startsWith("image/")) return;
+
+    currentImage = file;
+
+    const reader = new FileReader();
+
+    reader.onload = function(event){
+
+        beforeImage.src = event.target.result;
+
+        compressImage(file);
+
+    };
+
+    reader.readAsDataURL(file);
+
+});
 
 function compressImage(file){
 
