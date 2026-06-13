@@ -1,6 +1,6 @@
-// =======================
-// FIXED IMAGE COMPRESSOR
-// =======================
+// ==========================================
+// IMAGE COMPRESSOR (REVERSE LOGIC FIXED)
+// ==========================================
 
 if (document.getElementById("imageInput")) {
     const imageInput = document.getElementById("imageInput");
@@ -16,9 +16,10 @@ if (document.getElementById("imageInput")) {
 
     // স্লাইডার পরিবর্তন করলে
     slider.addEventListener("input", () => {
+        // UI-তে দেখাবে আপনি কত পারসেন্ট কম্প্রেস করতে চাচ্ছেন
         qualityLabel.textContent = "Compression Quality: " + slider.value + "%";
         
-        // Debouncing: স্লাইডার থামালে কম্প্রেস শুরু হবে
+        // Debouncing: স্লাইডার টানার সময় যেন ব্রাউজার আটকে না যায়
         clearTimeout(timeout);
         timeout = setTimeout(() => {
             if (currentImageFile) compressImage(currentImageFile);
@@ -35,8 +36,12 @@ if (document.getElementById("imageInput")) {
     });
 
     function compressImage(file) {
-        // লজিক: স্লাইডার ১০০ মানে হাই কোয়ালিটি (কম কম্প্রেশন), ১০ মানে লো কোয়ালিটি (বেশি কম্প্রেশন)
-        const quality = slider.value / 100; 
+        const sliderValue = parseInt(slider.value);
+
+        // REVERSE LOGIC: 
+        // স্লাইডার ১০০ হলে কোয়ালিটি হবে সর্বনিম্ন (0.05) -> বেশি কম্প্রেস
+        // স্লাইডার ১০ হলে কোয়ালিটি হবে সর্বোচ্চ (1.0) -> কম কম্প্রেস
+        const quality = Math.max(0.05, (110 - sliderValue) / 100); 
 
         const img = new Image();
         img.src = URL.createObjectURL(file);
@@ -54,13 +59,13 @@ if (document.getElementById("imageInput")) {
                 
                 compressedBlob = blob;
                 
-                // পুরোনো URL মুছে নতুনটি দেওয়া
+                // পুরোনো মেমোরি ক্লিয়ার করা
                 if (afterImage.src.startsWith('blob:')) {
                     URL.revokeObjectURL(afterImage.src);
                 }
                 afterImage.src = URL.createObjectURL(blob);
 
-                // স্ট্যাটাস আপডেট
+                // সাইজ স্ট্যাটাস আপডেট
                 updateStats(file.size, blob.size);
                 
                 URL.revokeObjectURL(img.src);
@@ -75,6 +80,7 @@ if (document.getElementById("imageInput")) {
 
         stats[0].textContent = originalKB + " KB";
         stats[1].textContent = compressedKB + " KB";
+        // যদি কোয়ালিটি একদম ফুল থাকে, তবে সেভিং মাইনাস না দেখিয়ে ০% দেখাবে
         stats[2].textContent = (savedPercent < 0 ? 0 : savedPercent) + "%";
     }
 
