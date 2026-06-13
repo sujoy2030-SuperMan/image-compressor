@@ -100,65 +100,67 @@ if (
     }
 
     // Compress Function
-    function compressImage(file) {
+    function compressImage(file){
 
-        const quality = slider.value / 100;
+    // Slider 100 = বেশি compression
+    // Slider 10 = কম compression
 
-        const reader = new FileReader();
+    const compressionLevel = slider.value;
 
-        reader.onload = function (e) {
+    const quality =
+    Math.max(0.05, (110 - compressionLevel) / 100);
 
-            const img = new Image();
+    const img = new Image();
 
-            img.onload = function () {
+    img.onload = function(){
 
-                const canvas =
-                    document.createElement("canvas");
+        const canvas =
+        document.createElement("canvas");
 
-                canvas.width = img.width;
-                canvas.height = img.height;
+        canvas.width = img.width;
+        canvas.height = img.height;
 
-                const ctx = canvas.getContext("2d");
+        const ctx =
+        canvas.getContext("2d");
 
-                ctx.drawImage(img, 0, 0);
+        ctx.drawImage(img,0,0);
 
-                canvas.toBlob((blob) => {
+        canvas.toBlob(blob => {
 
-                    if (!blob) {
-                        alert("Compression Failed");
-                        return;
-                    }
+            compressedBlob = blob;
 
-                    compressedBlob = blob;
+            afterImage.src =
+            URL.createObjectURL(blob);
 
-                    afterImage.src =
-                        URL.createObjectURL(blob);
+            const originalKB =
+            (file.size/1024).toFixed(2);
 
-                    stats[0].textContent =
-                        (file.size / 1024).toFixed(2) + " KB";
+            const compressedKB =
+            (blob.size/1024).toFixed(2);
 
-                    stats[1].textContent =
-                        (blob.size / 1024).toFixed(2) + " KB";
+            const saved =
+            (((file.size-blob.size)/file.size)*100)
+            .toFixed(1);
 
-                    const saved =
-                        (((file.size - blob.size) / file.size) * 100)
-                        .toFixed(1);
+            stats[0].textContent =
+            originalKB + " KB";
 
-                    stats[2].textContent =
-                        saved + "%";
+            stats[1].textContent =
+            compressedKB + " KB";
 
-                }, "image/jpeg", quality);
+            stats[2].textContent =
+            saved + "%";
 
-            };
+        },
+        "image/jpeg",
+        quality);
 
-            img.src = e.target.result;
+    };
 
-        };
+    img.src =
+    URL.createObjectURL(file);
 
-        reader.readAsDataURL(file);
-
-    }
-
+}
     // Download
     document.querySelector(".download-btn")
         ?.addEventListener("click", () => {
