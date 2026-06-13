@@ -1,207 +1,254 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Image Compressor - Image Tools Hub</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Compressor - Image Tools Hub</title>
 
-<style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
 
-body{
-background:linear-gradient(135deg,#0f172a,#1e293b);
-color:white;
-padding:20px;
-}
+        body {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: white;
+            padding: 20px;
+            min-height: 100vh;
+        }
 
-.container{
-max-width:1000px;
-margin:auto;
-}
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
 
-h1{
-text-align:center;
-margin-bottom:10px;
-}
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
 
-.subtitle{
-text-align:center;
-color:#cbd5e1;
-margin-bottom:25px;
-}
+        .subtitle {
+            text-align: center;
+            color: #cbd5e1;
+            margin-bottom: 25px;
+        }
 
-.card{
-background:rgba(255,255,255,.08);
-backdrop-filter:blur(12px);
-padding:25px;
-border-radius:20px;
-}
+        .card {
+            background: rgba(255, 255, 255, .08);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
 
-.upload-box{
-height:150px;
-border:3px dashed #3b82f6;
-border-radius:20px;
-display:flex;
-align-items:center;
-justify-content:center;
-text-align:center;
-cursor:pointer;
-font-size:20px;
-font-weight:bold;
-margin-bottom:20px;
-}
+        .upload-box {
+            height: 160px;
+            border: 3px dashed #3b82f6;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            transition: background 0.3s, border-color 0.3s;
+        }
 
-.upload-box:hover{
-background:rgba(59,130,246,.08);
-}
+        .upload-box:hover {
+            background: rgba(59, 130, 246, .08);
+            border-color: #60a5fa;
+        }
 
-input[type=file]{
-display:none;
-}
+        input[type=file] {
+            display: none;
+        }
 
-.slider-area{
-margin:20px 0;
-}
+        .slider-area {
+            margin: 25px 0;
+        }
 
-.slider-area label{
-display:block;
-margin-bottom:10px;
-}
+        .slider-area label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #e2e8f0;
+        }
 
-input[type=range]{
-width:100%;
-}
+        input[type=range] {
+            width: 100%;
+            cursor: pointer;
+        }
 
-.grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:20px;
-margin-top:20px;
-}
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
 
-.preview{
-background:#111827;
-padding:15px;
-border-radius:15px;
-text-align:center;
-min-height:300px;
-}
+        .preview {
+            background: #111827;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            min-height: 320px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #1e293b;
+        }
 
-.preview img{
-max-width:100%;
-max-height:240px;
-object-fit:contain;
-}
+        .preview h2 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #94a3b8;
+        }
 
-.stats{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:15px;
-margin-top:20px;
-}
+        .preview img {
+            max-width: 100%;
+            max-height: 240px;
+            object-fit: contain;
+            border-radius: 8px;
+        }
 
-.stat{
-background:#111827;
-padding:15px;
-border-radius:15px;
-text-align:center;
-}
+        /* ইমেজ সিলেক্ট না হওয়া পর্যন্ত প্রিভিউ হাইড রাখার জন্য */
+        .preview img:not([src]) {
+            display: none;
+        }
 
-.download-btn{
-width:100%;
-padding:15px;
-margin-top:20px;
-border:none;
-border-radius:15px;
-cursor:pointer;
-font-size:18px;
-font-weight:bold;
-color:white;
-background:linear-gradient(90deg,#3b82f6,#8b5cf6);
-}
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 25px;
+        }
 
-@media(max-width:768px){
-.grid{
-grid-template-columns:1fr;
-}
+        .stat {
+            background: #111827;
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid #1e293b;
+        }
 
-.stats{
-grid-template-columns:1fr;
-}
-}
-</style>
+        .stat h3 {
+            font-size: 1rem;
+            color: #94a3b8;
+            margin-bottom: 5px;
+        }
+
+        .stat p {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #3b82f6;
+        }
+
+        .download-btn {
+            width: 100%;
+            padding: 15px;
+            margin-top: 25px;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            transition: opacity 0.2s, transform 0.1s;
+        }
+
+        .download-btn:hover {
+            opacity: 0.9;
+        }
+
+        .download-btn:active {
+            transform: scale(0.98);
+        }
+
+        @media(max-width:768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<div class="container">
+    <div class="container">
 
-<h1>🗜 Image Compressor</h1>
-<p class="subtitle">Compress JPG, PNG & WebP Images Online</p>
+        <h1>🗜 Image Compressor</h1>
+        <p class="subtitle">Compress JPG, PNG & WebP Images Online</p>
 
-<div class="card">
+        <div class="card">
 
-<label class="upload-box">
-<div>
-📂 Drag & Drop Image Here
-<br><br>
-or Click To Upload
-</div>
-<input type="file" id="imageInput" accept="image/*">
-</label>
+            <label class="upload-box">
+                <div>
+                    📂 Drag & Drop Image Here
+                    <br><br>
+                    or Click To Upload
+                </div>
+                <input type="file" id="imageInput" accept="image/*">
+            </label>
 
-<div class="slider-area">
-<label>Compression Quality: 70%</label>
-<input type="range" min="10" max="100" value="70">
-</div>
+            <div class="slider-area">
+                <label>Compression Quality: 50%</label>
+                <input type="range" min="10" max="100" value="50">
+            </div>
 
-<div class="grid">
+            <div class="grid">
+                <div class="preview">
+                    <h2>Before</h2>
+                    <img id="beforeImage" alt="Original Preview">
+                </div>
 
-<div class="preview">
-<h2>Before</h2>
-<img id="beforeImage">
-</div>
+                <div class="preview">
+                    <h2>After</h2>
+                    <img id="afterImage" alt="Compressed Preview">
+                </div>
+            </div>
 
-<div class="preview">
-<h2>After</h2>
-<img id="afterImage">
-</div>
+            <div class="stats">
+                <div class="stat">
+                    <h3>Original Size</h3>
+                    <p>0 KB</p>
+                </div>
 
-</div>
+                <div class="stat">
+                    <h3>Compressed Size</h3>
+                    <p>0 KB</p>
+                </div>
 
-<div class="stats">
+                <div class="stat">
+                    <h3>Saved</h3>
+                    <p>0%</p>
+                </div>
+            </div>
 
-<div class="stat">
-<h3>Original Size</h3>
-<p>0 KB</p>
-</div>
+            <button class="download-btn">
+                Download Compressed Image
+            </button>
 
-<div class="stat">
-<h3>Compressed Size</h3>
-<p>0 KB</p>
-</div>
+        </div>
 
-<div class="stat">
-<h3>Saved</h3>
-<p>0%</p>
-</div>
+    </div>
 
-</div>
-
-<button class="download-btn">
-Download Compressed Image
-</button>
-
-</div>
-
-</div>
-
-
-<script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
