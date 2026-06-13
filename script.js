@@ -1,5 +1,5 @@
 // ==========================================
-// IMAGE COMPRESSOR (REVERSE LOGIC FIXED)
+// IMAGE COMPRESSOR (STRICT REVERSE LOGIC)
 // ==========================================
 
 if (document.getElementById("imageInput")) {
@@ -16,10 +16,10 @@ if (document.getElementById("imageInput")) {
 
     // স্লাইডার পরিবর্তন করলে
     slider.addEventListener("input", () => {
-        // UI-তে দেখাবে আপনি কত পারসেন্ট কম্প্রেস করতে চাচ্ছেন
-        qualityLabel.textContent = "Compression Quality: " + slider.value + "%";
+        // এখানে "Compression Level" বা "Compression Amount" দেখালে ইউজার বুঝবে ডানে নিলে কম্প্রেশন বাড়ছে
+        qualityLabel.textContent = "Compression Level: " + slider.value + "%";
         
-        // Debouncing: স্লাইডার টানার সময় যেন ব্রাউজার আটকে না যায়
+        // Debouncing: ব্রাউজার ল্যাগ প্রতিরোধ করতে
         clearTimeout(timeout);
         timeout = setTimeout(() => {
             if (currentImageFile) compressImage(currentImageFile);
@@ -38,10 +38,11 @@ if (document.getElementById("imageInput")) {
     function compressImage(file) {
         const sliderValue = parseInt(slider.value);
 
-        // REVERSE LOGIC: 
-        // স্লাইডার ১০০ হলে কোয়ালিটি হবে সর্বনিম্ন (0.05) -> বেশি কম্প্রেস
-        // স্লাইডার ১০ হলে কোয়ালিটি হবে সর্বোচ্চ (1.0) -> কম কম্প্রেস
-        const quality = Math.max(0.05, (110 - sliderValue) / 100); 
+        // নিখুঁত রিভার্স ক্যালকুলেশন:
+        // স্লাইডার ১০০% হলে গুণগত মান (Quality) হবে ০.০১ (সর্বোচ্চ কম্প্রেশন, সর্বনিম্ন সাইজ)
+        // স্লাইডার ১০% হলে গুণগত মান (Quality) হবে ১.০০ (সর্বনিম্ন কম্প্রেশন, সর্বোচ্চ সাইজ)
+        const rawQuality = (110 - sliderValue) / 100;
+        const quality = Math.max(0.01, Math.min(1.0, rawQuality)); 
 
         const img = new Image();
         img.src = URL.createObjectURL(file);
@@ -59,13 +60,12 @@ if (document.getElementById("imageInput")) {
                 
                 compressedBlob = blob;
                 
-                // পুরোনো মেমোরি ক্লিয়ার করা
                 if (afterImage.src.startsWith('blob:')) {
                     URL.revokeObjectURL(afterImage.src);
                 }
                 afterImage.src = URL.createObjectURL(blob);
 
-                // সাইজ স্ট্যাটাস আপডেট
+                // স্ট্যাটাস আপডেট
                 updateStats(file.size, blob.size);
                 
                 URL.revokeObjectURL(img.src);
@@ -80,7 +80,6 @@ if (document.getElementById("imageInput")) {
 
         stats[0].textContent = originalKB + " KB";
         stats[1].textContent = compressedKB + " KB";
-        // যদি কোয়ালিটি একদম ফুল থাকে, তবে সেভিং মাইনাস না দেখিয়ে ০% দেখাবে
         stats[2].textContent = (savedPercent < 0 ? 0 : savedPercent) + "%";
     }
 
