@@ -1,10 +1,11 @@
-<!DOCTYPE html>
+# Django/Flask ba any backend chara direct client-side dynamic engine ready korar python builder script
+html_content = """<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Tools Hub - Premium Studio</title>
-    <meta name="description" content="Free online image tools - Compress, Resize, Convert JPG, PNG and WebP images instantly.">
+    <title>Image Tools Hub - Premium Studio v2</title>
+    <meta name="description" content="Free online image tools - Compress, Resize, Convert JPG, PNG and WebP images instantly with active Drag and Drop.">
     <style>
         :root {
             --bg-base: #0b0f19;
@@ -83,7 +84,6 @@
             color: var(--text-dim);
         }
 
-        /* Tools Selector Dashboard */
         .dashboard-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -150,7 +150,6 @@
             line-height: 1.5;
         }
 
-        /* Interactive App Studio Workspace */
         .studio-workspace {
             background: var(--surface);
             border: 1px solid var(--border);
@@ -165,7 +164,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Dual Column Studio Grid Layout */
         .studio-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -189,7 +187,6 @@
             gap: 8px;
         }
 
-        /* Upload Container Interface */
         .dropzone {
             border: 2px dashed rgba(99, 102, 241, 0.3);
             background: var(--surface-accent);
@@ -205,6 +202,12 @@
             min-height: 180px;
         }
 
+        .dropzone.dragover {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.08);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+        }
+
         .dropzone:hover {
             border-color: #6366f1;
             background: rgba(99, 102, 241, 0.03);
@@ -213,9 +216,13 @@
         .dropzone-icon {
             font-size: 36px;
             margin-bottom: 12px;
+            transition: transform 0.2s;
+        }
+        
+        .dropzone.dragover .dropzone-icon {
+            transform: scale(1.2);
         }
 
-        /* Form Layout Styles */
         .control-box {
             background: var(--surface-accent);
             border: 1px solid var(--border);
@@ -255,7 +262,6 @@
             box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
         }
 
-        /* Native Range Input Customization */
         input[type="range"].input-control {
             padding: 0;
             height: 6px;
@@ -263,7 +269,6 @@
             cursor: pointer;
         }
 
-        /* Custom Output Screen Panel */
         .preview-panel {
             background: var(--surface-accent);
             border: 1px solid var(--border);
@@ -312,7 +317,6 @@
             border: 1px solid rgba(16, 185, 129, 0.2);
         }
 
-        /* Call To Actions Buttons */
         .action-container {
             margin-top: 20px;
             width: 100%;
@@ -342,8 +346,6 @@
             filter: brightness(1.1);
         }
 
-        .btn-primary:active { transform: translateY(1px); }
-
         footer {
             margin-top: auto;
             text-align: center;
@@ -362,11 +364,10 @@
 
     <section class="hero">
         <h1>Optimize & Transform Images</h1>
-        <p>Your media stays completely private. All computation happens locally on your machine.</p>
+        <p>Your media stays completely private. Drag, drop, and process instantly inside your system browser.</p>
     </section>
 
     <div class="dashboard-container">
-        <!-- Modern Grid Selectors -->
         <div class="tools-selector">
             <div class="tool-card" id="card-compress" onclick="switchStudio('compress')">
                 <div class="icon-wrapper">🗜️</div>
@@ -387,34 +388,30 @@
             </div>
         </div>
 
-        <!-- Single Core Unified Application Workspace -->
         <div id="studioWorkspace" class="studio-workspace">
             <div class="studio-grid">
                 
-                <!-- Left Configuration Column Panel -->
                 <div class="panel-column">
                     <div class="panel-title">⚙️ Control Configurations</div>
                     
                     <input type="file" id="studioFileEngine" accept="image/*" style="display: none;" onchange="loadMediaToEngine(event)">
                     
-                    <div class="dropzone" onclick="document.getElementById('studioFileEngine').click()">
+                    <div class="dropzone" id="dropzoneContainer" onclick="document.getElementById('studioFileEngine').click()">
                         <div class="dropzone-icon" id="dropzoneIcon">📥</div>
                         <div id="dropzoneLabel" style="font-weight: 600; font-size: 14px;">Select or Drop Image Asset</div>
                         <div id="dropzoneSubtext" style="color: var(--text-dim); font-size: 12px; margin-top: 4px;">Supports JPG, PNG, WebP</div>
                     </div>
 
                     <div class="control-box" id="dynamicControlsContainer">
-                        <!-- Controls get written here dynamically -->
-                    </div>
+                        </div>
                 </div>
 
-                <!-- Right Real-time Preview Monitor Column -->
                 <div class="panel-column" style="display: flex; flex-direction: column;">
                     <div class="panel-title">👁️ Live Monitor Screen</div>
                     
                     <div class="preview-panel">
                         <div class="placeholder-text" id="previewPlaceholder">
-                            Upload an asset file from the configuration block to activate the output monitor view.
+                            Upload or drag an asset file into the system configuration block to activate monitor view.
                         </div>
                         <div class="canvas-preview-wrapper" id="previewWrapper">
                             <img id="imageMonitorSource" src="" alt="Monitor Screen Output Asset">
@@ -434,7 +431,7 @@
     </div>
 
     <footer>
-        &copy; 2026 ImageTools Studio. Powered by Client-Side Canvas Engines.
+        &copy; 2026 ImageTools Studio. Clean Client-Side Safe Processing Map.
     </footer>
 
     <script>
@@ -445,7 +442,6 @@
         function switchStudio(engineType) {
             selectedEngine = engineType;
             
-            // Toggle highlight styles on cards
             document.querySelectorAll('.tool-card').forEach(c => c.classList.remove('active'));
             document.getElementById(`card-${engineType}`).classList.add('active');
 
@@ -457,13 +453,18 @@
             workspace.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
             if (engineType === 'compress') {
+                // Fixed: High compress means slider right = low quality scale.
                 targetControls.innerHTML = `
                     <div class="form-item">
                         <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-                            <label style="margin:0;">Compression Compression Profile</label>
-                            <span id="sliderMetaValue" style="font-size:12px; color:#6366f1; font-weight:700;">80%</span>
+                            <label style="margin:0;">Compression Profile Level</label>
+                            <span id="sliderMetaValue" style="font-size:12px; color:#6366f1; font-weight:700;">50%</span>
                         </div>
-                        <input type="range" class="input-control" id="ctrlQuality" min="10" max="100" value="80" oninput="document.getElementById('sliderMetaValue').innerText = this.value + '%'">
+                        <input type="range" class="input-control" id="ctrlQuality" min="0" max="90" value="50" oninput="document.getElementById('sliderMetaValue').innerText = this.value + '%'">
+                        <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-dim); margin-top: 5px;">
+                            <span>High Quality</span>
+                            <span>Max Compression</span>
+                        </div>
                     </div>
                 `;
             } else if (engineType === 'resize') {
@@ -471,11 +472,11 @@
                     <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
                         <div class="form-item">
                             <label>Target Width (px)</label>
-                            <input type="number" class="input-control" id="ctrlWidth" placeholder="e.g. 1920">
+                            <input type="number" class="input-control" id="ctrlWidth" placeholder="Width">
                         </div>
                         <div class="form-item">
                             <label>Target Height (px)</label>
-                            <input type="number" class="input-control" id="ctrlHeight" placeholder="e.g. 1080">
+                            <input type="number" class="input-control" id="ctrlHeight" placeholder="Height">
                         </div>
                     </div>
                 `;
@@ -491,6 +492,8 @@
                     </div>
                 `;
             }
+            
+            setupDragAndDrop();
         }
 
         function resetStudioState() {
@@ -504,15 +507,56 @@
             systemLoadedImageAsset = null;
         }
 
+        // Active Drag and Drop Events Implementation Pipeline
+        function setupDragAndDrop() {
+            const dropzone = document.getElementById('dropzoneContainer');
+            
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropzone.addEventListener(eventName, preventDefaults, false);
+            });
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropzone.addEventListener(eventName, () => dropzone.classList.add('dragover'), false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropzone.addEventListener(eventName, () => dropzone.classList.remove('dragover'), false);
+            });
+
+            dropzone.addEventListener('drop', handleDrop, false);
+        }
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            if (files.length > 0) {
+                const fileInput = document.getElementById('studioFileEngine');
+                fileInput.files = files; // Bind input file element
+                processFileAsset(files[0]);
+            }
+        }
+
         function loadMediaToEngine(event) {
             const targetedAssetFile = event.target.files[0];
-            if (!targetedAssetFile) return;
+            if (targetedAssetFile) processFileAsset(targetedAssetFile);
+        }
 
-            originalAssetMetaName = targetedAssetFile.name.split('.')[0];
+        function processFileAsset(file) {
+            if (!file.type.startsWith('image/')) {
+                alert("Type Refusal: Selected file structure must be valid image file map!");
+                return;
+            }
+            
+            originalAssetMetaName = file.name.split('.')[0];
             
             document.getElementById('dropzoneIcon').innerText = "✅";
             document.getElementById('dropzoneLabel').innerText = "Asset Registered";
-            document.getElementById('dropzoneSubtext').innerText = `${targetedAssetFile.name} [ ${(targetedAssetFile.size / 1024).toFixed(1)} KB ]`;
+            document.getElementById('dropzoneSubtext').innerText = `${file.name} [ ${(file.size / 1024).toFixed(1)} KB ]`;
 
             const assetReader = new FileReader();
             assetReader.onload = function(readEvent) {
@@ -533,7 +577,7 @@
                 };
                 systemLoadedImageAsset.src = readEvent.target.result;
             };
-            assetReader.readAsDataURL(targetedAssetFile);
+            assetReader.readAsDataURL(file);
         }
 
         function executeImageTransformation() {
@@ -561,7 +605,8 @@
 
             if (selectedEngine === 'compress') {
                 const manualQualityValue = document.getElementById('ctrlQuality').value;
-                exportQualityScale = manualQualityValue / 100;
+                // Since 0% compression level means 1.0 (100%) quality scale, and 90% compression level means 0.1 quality scale:
+                exportQualityScale = (100 - manualQualityValue) / 100;
             }
 
             if (selectedEngine === 'convert') {
@@ -578,4 +623,8 @@
         }
     </script>
 </body>
-</html>
+</html>"""
+
+with open("index.html", "w", encoding="utf-8") as file:
+    file.write(html_content)
+print("File successfully generated.")
