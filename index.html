@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Tools Hub - Mega Premium Studio</title>
+    <title>Image Tools Hub - Mega Premium Studio v4</title>
     <meta name="description" content="All-in-one Client-Side Suite: Compress, Resize, Convert, Crop, PDF to Image, and Image to PDF instantly.">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
@@ -94,7 +94,6 @@
             width: 100%;
         }
 
-        /* Responsive 6-Grid Selector for Toolkit routes */
         .tools-selector {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -199,6 +198,7 @@
             align-items: center;
             justify-content: center;
             min-height: 170px;
+            position: relative;
         }
 
         .dropzone.dragover {
@@ -208,13 +208,14 @@
             transform: scale(1.01);
         }
 
-        .dropzone-icon {
-            font-size: 32px;
-            margin-bottom: 10px;
+        .dropzone-icon, .dropzone div {
             pointer-events: none;
         }
 
-        .dropzone div { pointer-events: none; }
+        .dropzone-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
 
         .control-box {
             background: var(--surface-accent);
@@ -269,24 +270,31 @@
         .canvas-preview-wrapper {
             max-width: 100%;
             max-height: 300px;
-            overflow: auto;
+            position: relative;
             border-radius: 10px;
             border: 1px solid rgba(255,255,255,0.05);
             display: none;
+            overflow: hidden;
         }
 
-        /* Specific interface support box for Crop overlay box mapping */
         .crop-container-box {
             position: relative;
             display: inline-block;
+            max-width: 100%;
         }
+
         .crop-overlay-selector {
             position: absolute;
             border: 2px dashed #6366f1;
-            background: rgba(99, 102, 241, 0.25);
+            background: rgba(99, 102, 241, 0.2);
             cursor: move;
             display: none;
-            box-shadow: 0 0 0 4000px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 0 0 4000px rgba(0, 0, 0, 0.5);
+            top: 10px;
+            left: 10px;
+            width: 100px;
+            height: 100px;
+            z-index: 10;
         }
 
         .canvas-preview-wrapper img {
@@ -364,13 +372,13 @@
             <div class="tool-card" id="card-compress" onclick="switchStudio('compress')">
                 <div class="icon-wrapper">🗜️</div>
                 <h2>Compress Image</h2>
-                <p>Shrink file size data map footprints safely.</p>
+                <p>Shrink file size footprint safely.</p>
             </div>
 
             <div class="tool-card" id="card-resize" onclick="switchStudio('resize')">
                 <div class="icon-wrapper">📏</div>
                 <h2>Resize Image</h2>
-                <p>Adjust width scale and explicit dimensions.</p>
+                <p>Adjust width scale and height dimensions.</p>
             </div>
 
             <div class="tool-card" id="card-convert" onclick="switchStudio('convert')">
@@ -384,5 +392,3 @@
                 <h2>Crop Image</h2>
                 <p>Cut pixel margins using region maps selectors.</p>
             </div>
-
-            <div class="
