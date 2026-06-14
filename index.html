@@ -3,213 +3,350 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Tools Hub - Layout Fix Studio</title>
+    <title>Media Studio Engine - Ultimate Fixed Build</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
 
     <style>
-        :root {
-            --bg-base: #0b0f19;
-            --surface: rgba(17, 24, 39, 0.8);
-            --surface-accent: rgba(30, 41, 59, 0.6);
-            --border: rgba(255, 255, 255, 0.08);
-            --border-glow: rgba(99, 102, 241, 0.4);
-            --primary: linear-gradient(135deg, #4f46e5, #7c3aed);
-            --primary-glow: rgba(124, 58, 237, 0.3);
-            --success: #10b981;
-            --text-white: #f8fafc;
-            --text-dim: #94a3b8;
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: system-ui, -apple-system, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
         body {
-            background-color: var(--bg-base);
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(79, 70, 229, 0.12) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(124, 58, 237, 0.12) 0%, transparent 40%);
-            color: var(--text-white);
+            background-color: #0b0f19;
+            color: #f8fafc;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            padding: 0;
         }
 
         header {
-            padding: 20px 6%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(11, 15, 25, 0.8);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border);
+            padding: 20px 30px;
+            background: #111827;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .logo {
             font-size: 22px;
             font-weight: 800;
-            background: linear-gradient(to right, #6366f1, #a855f7);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #6366f1;
         }
 
         .hero {
             text-align: center;
-            padding: 30px 20px 15px;
+            padding: 40px 20px 20px;
         }
 
         .hero h1 {
-            font-size: 34px;
+            font-size: 32px;
             font-weight: 800;
-            margin-bottom: 10px;
-            background: linear-gradient(to right, #ffffff, #cbd5e1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+            color: #ffffff;
         }
 
-        .hero p { font-size: 14px; color: var(--text-dim); }
+        .hero p {
+            font-size: 14px;
+            color: #94a3b8;
+        }
 
-        .dashboard-container {
+        .main-dashboard-wrap {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-            width: 100%;
         }
 
-        /* Fixed Visibility Grid Container */
-        .tools-selector {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        /* 100% Guaranteed Structural Cards Grid Flex Map Layout */
+        .cards-selection-container {
+            display: flex;
+            flex-wrap: wrap;
             gap: 15px;
             margin-bottom: 30px;
+            width: 100%;
         }
 
-        .tool-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 18px;
-            text-align: left;
-            transition: all 0.2s ease;
+        .tool-action-card {
+            background: #111827;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 20px;
+            flex: 1;
+            min-width: 250px;
             cursor: pointer;
+            transition: all 0.2s ease;
         }
 
-        .tool-card:hover, .tool-card.active {
+        .tool-action-card:hover, .tool-action-card.active {
             border-color: #6366f1;
-            box-shadow: 0 0 15px var(--primary-glow);
-            transform: translateY(-2px);
+            background: #1e293b;
         }
 
-        .tool-card .icon-wrapper {
-            width: 40px;
-            height: 40px;
-            background: var(--surface-accent);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            margin-bottom: 12px;
-            border: 1px solid var(--border);
+        .card-icon {
+            font-size: 24px;
+            margin-bottom: 10px;
         }
 
-        .tool-card.active .icon-wrapper { background: var(--primary); }
-        .tool-card h2 { font-size: 15px; margin-bottom: 5px; font-weight: 700; }
-        .tool-card p { color: var(--text-dim); font-size: 12px; line-height: 1.4; }
+        .tool-action-card h3 {
+            font-size: 16px;
+            margin-bottom: 5px;
+            color: #ffffff;
+        }
 
-        /* Guaranteed Visible Workspace Layout Frame */
-        .studio-workspace {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 20px;
+        .tool-action-card p {
+            font-size: 12px;
+            color: #94a3b8;
+            line-height: 1.4;
+        }
+
+        /* Standard Flex Columns Layout Forcing Render Workspace View Component */
+        .studio-workspace-wrapper {
+            background: #111827;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
             padding: 25px;
-            display: block !important; /* Force Display Fix */
+            width: 100%;
         }
 
-        .studio-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
+        .studio-columns-split {
+            display: flex;
+            flex-direction: row;
+            gap: 30px;
         }
 
-        @media(max-width: 850px) { .studio-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 800px) {
+            .studio-columns-split {
+                flex-direction: column;
+            }
+        }
 
-        .panel-title {
+        .workspace-column {
+            flex: 1;
+            min-width: 290px;
+        }
+
+        .panel-heading-title {
             font-size: 12px;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--text-dim);
-            margin-bottom: 12px;
+            color: #94a3b8;
             font-weight: 700;
+            margin-bottom: 15px;
+            letter-spacing: 0.5px;
         }
 
-        .dropzone {
-            border: 2px dashed rgba(99, 102, 241, 0.3);
-            background: var(--surface-accent);
-            border-radius: 14px;
-            padding: 30px 15px;
+        .dropzone-upload-area {
+            border: 2px dashed rgba(99, 102, 241, 0.4);
+            background: #0f172a;
+            border-radius: 12px;
+            padding: 40px 20px;
             text-align: center;
             cursor: pointer;
-            min-height: 150px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            margin-bottom: 20px;
         }
 
-        .dropzone.dragover {
-            border-color: #10b981 !important;
-            background: rgba(16, 185, 129, 0.1) !important;
+        .dropzone-upload-area:hover {
+            border-color: #10b981;
         }
 
-        .dropzone-icon, .dropzone div, .dropzone p { pointer-events: none; }
-        .dropzone-icon { font-size: 30px; margin-bottom: 8px; }
-
-        .control-box {
-            background: var(--surface-accent);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 18px;
-            margin-top: 15px;
+        .control-box-options {
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
         }
 
-        .form-item { margin-bottom: 14px; }
-        .form-item:last-child { margin-bottom: 0; }
-        .form-item label { display: block; font-size: 12px; font-weight: 600; color: #cbd5e1; margin-bottom: 5px; }
+        .form-row-item {
+            margin-bottom: 15px;
+        }
 
-        .input-control {
+        .form-row-item label {
+            display: block;
+            font-size: 12px;
+            color: #cbd5e1;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .input-element-field {
             width: 100%;
             padding: 10px 12px;
-            background: #0f172a;
-            border: 1px solid var(--border);
+            background: #0b0f19;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 8px;
             color: white;
             font-size: 13px;
             outline: none;
         }
 
-        input[type="range"].input-control { padding: 0; height: 5px; cursor: pointer; }
+        input[type="range"].input-element-field {
+            padding: 0;
+            height: 6px;
+        }
 
-        .preview-panel {
-            background: var(--surface-accent);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 15px;
+        .preview-monitor-frame {
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            min-height: 250px;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 250px;
+            flex-direction: column;
             position: relative;
         }
 
-        .canvas-preview-wrapper {
+        .canvas-source-wrapper {
             max-width: 100%;
-            max-height: 280px;
+            display: none;
             position: relative;
-            border-radius: 8
+        }
+
+        .canvas-source-wrapper img {
+            max-width: 100%;
+            max-height: 300px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .crop-bounding-selector-box {
+            position: absolute;
+            border: 2px dashed #6366f1;
+            background: rgba(99, 102, 241, 0.25);
+            cursor: move;
+            display: none;
+            box-shadow: 0 0 0 5000px rgba(0, 0, 0, 0.6);
+            top: 10px;
+            left: 10px;
+            width: 120px;
+            height: 120px;
+            z-index: 5;
+        }
+
+        .placeholder-monitor-text {
+            color: #94a3b8;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .engine-logs-badge {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .trigger-action-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .trigger-action-btn:hover {
+            filter: brightness(1.1);
+        }
+
+        footer {
+            margin-top: auto;
+            text-align: center;
+            padding: 20px;
+            color: #94a3b8;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">✨ ImageTools.studio</div>
+    </header>
+
+    <section class="hero">
+        <h1>All-in-One Media Transformation Suite</h1>
+        <p>Local client-side fast execution profile configuration layout pipeline.</p>
+    </section>
+
+    <div class="main-dashboard-wrap">
+        
+        <div class="cards-selection-container">
+            <div class="tool-action-card active" id="card-compress" onclick="switchStudio('compress')">
+                <div class="card-icon">🗜️</div>
+                <h3>Compress Image</h3>
+                <p>Optimize asset metadata and reduce sizes footprint map.</p>
+            </div>
+            <div class="tool-action-card" id="card-resize" onclick="switchStudio('resize')">
+                <div class="card-icon">📏</div>
+                <h3>Resize Image</h3>
+                <p>Modify raw pixel heights and width bounding boxes structures.</p>
+            </div>
+            <div class="tool-action-card" id="card-convert" onclick="switchStudio('convert')">
+                <div class="card-icon">🔄</div>
+                <h3>Convert Format</h3>
+                <p>Transcode media between JPG, PNG, and WebP layers.</p>
+            </div>
+            <div class="tool-action-card" id="card-crop" onclick="switchStudio('crop')">
+                <div class="card-icon">✂️</div>
+                <h3>Crop Image</h3>
+                <p>Slice specific sub region matrix borders maps coordinates.</p>
+            </div>
+            <div class="tool-action-card" id="card-pdf2img" onclick="switchStudio('pdf2img')">
+                <div class="card-icon">📄</div>
+                <h3>PDF to Image</h3>
+                <p>Convert vector PDF documents layers completely to standard imagery.</p>
+            </div>
+            <div class="tool-action-card" id="card-img2pdf" onclick="switchStudio('img2pdf')">
+                <div class="card-icon">📑</div>
+                <h3>Image to PDF</h3>
+                <p>Assemble multiple standard frames sequential blocks to single PDF file.</p>
+            </div>
+        </div>
+
+        <div class="studio-workspace-wrapper">
+            <div class="studio-columns-split">
+                
+                <div class="workspace-column">
+                    <div class="panel-heading-title">⚙️ Control Parameters Matrix</div>
+                    
+                    <input type="file" id="studioFileEngine" style="display: none;" onchange="loadMediaToEngine(event)">
+                    
+                    <div class="dropzone-upload-area" id="dropzoneContainer" onclick="triggerFileInputClick()">
+                        <div style="font-size: 32px; margin-bottom: 8px;" id="dropzoneIcon">📥</div>
+                        <div id="dropzoneLabel" style="font-weight: 700; font-size: 14px;">Select or Drag Asset File</div>
+                        <div id="dropzoneSubtext" style="color: #94a3b8; font-size: 11px; margin-top: 5px;">Supports all media standards extensions</div>
+                    </div>
+
+                    <div class="control-box-options" id="dynamicControlsContainer">
+                        <div class="form-row-item">
+                            <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+                                <label style="margin:0;">Compression Quality Ratio Range Profile</label>
+                                <span id="sliderMetaValue" style="font-size:12px; color:#6366f1; font-weight:700;">50%</span>
+                            </div>
+                            <input type="range" class="input-element-field" id="ctrlQuality" min="0" max="90" value="50" oninput="document.getElementById('sliderMetaValue').innerText = this.value + '%'">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="workspace-column" style="display: flex; flex-direction: column;">
+                    <div class="panel-heading-title">👁️ Live Monitor View Stream</div>
+                    
+                    <div class="preview-monitor-frame">
+                        <div class="placeholder-monitor-text" id="previewPlaceholder">
+                            Drop a valid image/pdf media asset inside the file area tracker module on left panel to initialize screen feed tracking views.
+                        </div>
+                        
+                        <div class="canvas-source-wrapper" id="previewWrapper">
+                            <div style="position: relative; display: inline-block; max-width: 100%;" id="cropBoxParentWrapper">
+                                <img id="imageMonitorSource" src="" alt="Live
