@@ -3,270 +3,579 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Tools Hub - Ultra Premium</title>
+    <title>Image Tools Hub - Premium Studio</title>
     <meta name="description" content="Free online image tools - Compress, Resize, Convert JPG, PNG and WebP images instantly.">
     <style>
         :root {
-            --bg-dark: #090d16;
-            --card-bg: rgba(30, 41, 59, 0.4);
-            --border-color: rgba(255, 255, 255, 0.08);
-            --primary: linear-gradient(135deg, #3b82f6, #8b5cf6);
-            --primary-hover: linear-gradient(135deg, #2563eb, #7c3aed);
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
+            --bg-base: #0b0f19;
+            --surface: rgba(17, 24, 39, 0.7);
+            --surface-accent: rgba(30, 41, 59, 0.5);
+            --border: rgba(255, 255, 255, 0.06);
+            --border-glow: rgba(99, 102, 241, 0.3);
+            --primary: linear-gradient(135deg, #4f46e5, #7c3aed);
+            --primary-glow: rgba(124, 58, 237, 0.3);
+            --success: #10b981;
+            --text-white: #f8fafc;
+            --text-dim: #94a3b8;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
         }
 
         body {
-            background-color: var(--bg-dark);
+            background-color: var(--bg-base);
             background-image: 
-                radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.15) 0, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.15) 0, transparent 50%);
-            color: var(--text-main);
+                radial-gradient(circle at 10% 20%, rgba(79, 70, 229, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(124, 58, 237, 0.12) 0%, transparent 40%);
+            color: var(--text-white);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            overflow-x: hidden;
         }
 
         header {
-            padding: 25px 5%;
+            padding: 20px 6%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid var(--border-color);
-            backdrop-filter: blur(10px);
+            background: rgba(11, 15, 25, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
             position: sticky;
             top: 0;
-            z-index: 50;
+            z-index: 100;
         }
 
         .logo {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 800;
-            background: var(--primary);
+            background: linear-gradient(to right, #6366f1, #a855f7);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .hero {
             text-align: center;
-            padding: 60px 20px 40px;
+            padding: 50px 20px 30px;
         }
 
         .hero h1 {
-            font-size: 42px;
+            font-size: 40px;
             font-weight: 800;
-            margin-bottom: 15px;
             letter-spacing: -1px;
+            margin-bottom: 12px;
             background: linear-gradient(to right, #ffffff, #cbd5e1);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .hero p {
-            font-size: 17px;
-            color: var(--text-muted);
+            font-size: 16px;
+            color: var(--text-dim);
         }
 
-        /* Tools Hub Layout */
-        .tools-container {
+        /* Tools Selector Dashboard */
+        .dashboard-container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
             width: 100%;
         }
 
-        .tools-grid {
+        .tools-selector {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            margin-bottom: 50px;
+            gap: 20px;
+            margin-bottom: 40px;
         }
 
-        .card {
-            background: var(--card-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            padding: 30px;
-            border-radius: 24px;
-            border: 1px solid var(--border-color);
-            text-align: center;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        .tool-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: left;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
             position: relative;
-            overflow: hidden;
         }
 
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            border-radius: 24px;
-            padding: 2px;
-            background: linear-gradient(to bottom bottom, rgba(255,255,255,0.1), transparent);
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            pointer-events: none;
+        .tool-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-glow);
+            box-shadow: 0 12px 30px rgba(99, 102, 241, 0.1);
         }
 
-        .card:hover {
-            transform: translateY(-8px);
-            border-color: rgba(139, 92, 246, 0.4);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        .tool-card.active {
+            background: rgba(99, 102, 241, 0.1);
+            border-color: #6366f1;
+            box-shadow: 0 0 25px var(--primary-glow);
         }
 
-        .card .icon {
-            font-size: 40px;
-            margin-bottom: 15px;
-            display: inline-block;
+        .tool-card .icon-wrapper {
+            width: 50px;
+            height: 50px;
+            background: var(--surface-accent);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 18px;
+            border: 1px solid var(--border);
         }
 
-        .card h2 {
-            font-size: 20px;
-            margin-bottom: 10px;
-            color: #fff;
+        .tool-card.active .icon-wrapper {
+            background: var(--primary);
         }
 
-        .card p {
-            color: var(--text-muted);
-            font-size: 14px;
+        .tool-card h2 {
+            font-size: 18px;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .tool-card p {
+            color: var(--text-dim);
+            font-size: 13px;
             line-height: 1.5;
         }
 
-        /* Dynamic Tool Workspace Section */
-        .workspace {
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px dashed rgba(255, 255, 255, 0.15);
+        /* Interactive App Studio Workspace */
+        .studio-workspace {
+            background: var(--surface);
+            border: 1px solid var(--border);
             border-radius: 24px;
-            padding: 40px 20px;
-            margin-top: 20px;
+            padding: 30px;
             display: none;
-            text-align: center;
-            animation: fadeIn 0.5s ease;
+            animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .workspace h3 {
-            font-size: 24px;
-            margin-bottom: 20px;
-            background: var(--primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        /* Dual Column Studio Grid Layout */
+        .studio-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 20px;
         }
 
-        /* Form elements & Custom components */
-        .upload-box {
-            border: 2px dashed rgba(59, 130, 246, 0.4);
-            padding: 40px;
-            border-radius: 16px;
-            background: rgba(0,0,0,0.2);
-            cursor: pointer;
-            max-width: 500px;
-            margin: 0 auto 25px;
-            transition: 0.3s;
+        @media(max-width: 900px) {
+            .studio-grid { grid-template-columns: 1fr; }
         }
 
-        .upload-box:hover {
-            background: rgba(59, 130, 246, 0.05);
-            border-color: #3b82f6;
-        }
-
-        .control-group {
-            max-width: 400px;
-            margin: 20px auto;
-            text-align: left;
-        }
-
-        .control-group label {
-            display: block;
+        .panel-title {
             font-size: 14px;
-            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-dim);
+            margin-bottom: 15px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Upload Container Interface */
+        .dropzone {
+            border: 2px dashed rgba(99, 102, 241, 0.3);
+            background: var(--surface-accent);
+            border-radius: 16px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 180px;
+        }
+
+        .dropzone:hover {
+            border-color: #6366f1;
+            background: rgba(99, 102, 241, 0.03);
+        }
+
+        .dropzone-icon {
+            font-size: 36px;
+            margin-bottom: 12px;
+        }
+
+        /* Form Layout Styles */
+        .control-box {
+            background: var(--surface-accent);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .form-item {
+            margin-bottom: 18px;
+        }
+
+        .form-item:last-child { margin-bottom: 0; }
+
+        .form-item label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #cbd5e1;
             margin-bottom: 8px;
         }
 
-        .input-field {
+        .input-control {
             width: 100%;
-            padding: 12px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid var(--border-color);
+            padding: 12px 16px;
+            background: #0f172a;
+            border: 1px solid var(--border);
             border-radius: 10px;
             color: white;
-            font-size: 15px;
+            font-size: 14px;
             outline: none;
+            transition: 0.2s;
         }
 
-        .input-field:focus {
-            border-color: #3b82f6;
+        .input-control:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
         }
 
-        .btn {
-            display: inline-block;
-            padding: 14px 28px;
-            background: var(--primary);
-            color: white;
-            text-decoration: none;
-            border-radius: 12px;
-            font-weight: 600;
-            border: none;
+        /* Native Range Input Customization */
+        input[type="range"].input-control {
+            padding: 0;
+            height: 6px;
+            background: #1e293b;
             cursor: pointer;
-            transition: 0.3s;
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
         }
 
-        .btn:hover {
-            background: var(--primary-hover);
-            transform: translateY(-2px);
+        /* Custom Output Screen Panel */
+        .preview-panel {
+            background: var(--surface-accent);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 300px;
+            position: relative;
         }
 
-        .preview-box {
-            margin-top: 25px;
+        .canvas-preview-wrapper {
+            max-width: 100%;
+            max-height: 320px;
+            overflow: hidden;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
             display: none;
         }
 
-        .preview-box img {
+        .canvas-preview-wrapper img {
+            display: block;
             max-width: 100%;
-            max-height: 300px;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
+            max-height: 320px;
+            object-fit: contain;
         }
 
-        .info-text {
-            font-size: 13px;
-            color: #10b981;
-            margin-top: 10px;
+        .placeholder-text {
+            color: var(--text-dim);
+            font-size: 14px;
+            text-align: center;
         }
+
+        .badge-status {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 15px;
+            display: none;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        /* Call To Actions Buttons */
+        .action-container {
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 15px var(--primary-glow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
+            filter: brightness(1.1);
+        }
+
+        .btn-primary:active { transform: translateY(1px); }
 
         footer {
             margin-top: auto;
             text-align: center;
-            padding: 30px;
-            color: var(--text-muted);
-            border-top: 1px solid var(--border-color);
-            font-size: 14px;
-        }
-
-        @media(max-width:768px){
-            .hero h1 { font-size: 32px; }
-            .tools-grid { grid-template-columns: 1fr; }
+            padding: 25px;
+            color: var(--text-dim);
+            border-top: 1px solid var(--border);
+            font-size: 13px;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">🖼️ Image Tools Hub</div>
+        <div class="logo">✨ ImageTools.studio</div>
     </header>
 
     <section class="hero">
+        <h1>Optimize & Transform Images</h1>
+        <p>Your media stays completely private. All computation happens locally on your machine.</p>
+    </section>
+
+    <div class="dashboard-container">
+        <!-- Modern Grid Selectors -->
+        <div class="tools-selector">
+            <div class="tool-card" id="card-compress" onclick="switchStudio('compress')">
+                <div class="icon-wrapper">🗜️</div>
+                <h2>Compress Size</h2>
+                <p>Shrink storage and network weight footprint without sacrificing pixels.</p>
+            </div>
+
+            <div class="tool-card" id="card-resize" onclick="switchStudio('resize')">
+                <div class="icon-wrapper">📏</div>
+                <h2>Adjust Dimensions</h2>
+                <p>Resize pixel widths, height parameters using advanced box ratios.</p>
+            </div>
+
+            <div class="tool-card" id="card-convert" onclick="switchStudio('convert')">
+                <div class="icon-wrapper">🔄</div>
+                <h2>Format Engine</h2>
+                <p>Transcode media structures directly into modern WebP, PNG, or JPG formats.</p>
+            </div>
+        </div>
+
+        <!-- Single Core Unified Application Workspace -->
+        <div id="studioWorkspace" class="studio-workspace">
+            <div class="studio-grid">
+                
+                <!-- Left Configuration Column Panel -->
+                <div class="panel-column">
+                    <div class="panel-title">⚙️ Control Configurations</div>
+                    
+                    <input type="file" id="studioFileEngine" accept="image/*" style="display: none;" onchange="loadMediaToEngine(event)">
+                    
+                    <div class="dropzone" onclick="document.getElementById('studioFileEngine').click()">
+                        <div class="dropzone-icon" id="dropzoneIcon">📥</div>
+                        <div id="dropzoneLabel" style="font-weight: 600; font-size: 14px;">Select or Drop Image Asset</div>
+                        <div id="dropzoneSubtext" style="color: var(--text-dim); font-size: 12px; margin-top: 4px;">Supports JPG, PNG, WebP</div>
+                    </div>
+
+                    <div class="control-box" id="dynamicControlsContainer">
+                        <!-- Controls get written here dynamically -->
+                    </div>
+                </div>
+
+                <!-- Right Real-time Preview Monitor Column -->
+                <div class="panel-column" style="display: flex; flex-direction: column;">
+                    <div class="panel-title">👁️ Live Monitor Screen</div>
+                    
+                    <div class="preview-panel">
+                        <div class="placeholder-text" id="previewPlaceholder">
+                            Upload an asset file from the configuration block to activate the output monitor view.
+                        </div>
+                        <div class="canvas-preview-wrapper" id="previewWrapper">
+                            <img id="imageMonitorSource" src="" alt="Monitor Screen Output Asset">
+                        </div>
+                        <div class="badge-status" id="engineStatusBadge">Asset Loaded Successfully</div>
+                    </div>
+
+                    <div class="action-container">
+                        <button class="btn-primary" id="masterExecutionBtn" onclick="executeImageTransformation()">
+                            ⚡ Export Output Asset
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2026 ImageTools Studio. Powered by Client-Side Canvas Engines.
+    </footer>
+
+    <script>
+        let selectedEngine = '';
+        let systemLoadedImageAsset = null;
+        let originalAssetMetaName = 'processed_media';
+
+        function switchStudio(engineType) {
+            selectedEngine = engineType;
+            
+            // Toggle highlight styles on cards
+            document.querySelectorAll('.tool-card').forEach(c => c.classList.remove('active'));
+            document.getElementById(`card-${engineType}`).classList.add('active');
+
+            const workspace = document.getElementById('studioWorkspace');
+            const targetControls = document.getElementById('dynamicControlsContainer');
+            
+            resetStudioState();
+            workspace.style.display = 'block';
+            workspace.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+            if (engineType === 'compress') {
+                targetControls.innerHTML = `
+                    <div class="form-item">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                            <label style="margin:0;">Compression Compression Profile</label>
+                            <span id="sliderMetaValue" style="font-size:12px; color:#6366f1; font-weight:700;">80%</span>
+                        </div>
+                        <input type="range" class="input-control" id="ctrlQuality" min="10" max="100" value="80" oninput="document.getElementById('sliderMetaValue').innerText = this.value + '%'">
+                    </div>
+                `;
+            } else if (engineType === 'resize') {
+                targetControls.innerHTML = `
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
+                        <div class="form-item">
+                            <label>Target Width (px)</label>
+                            <input type="number" class="input-control" id="ctrlWidth" placeholder="e.g. 1920">
+                        </div>
+                        <div class="form-item">
+                            <label>Target Height (px)</label>
+                            <input type="number" class="input-control" id="ctrlHeight" placeholder="e.g. 1080">
+                        </div>
+                    </div>
+                `;
+            } else if (engineType === 'convert') {
+                targetControls.innerHTML = `
+                    <div class="form-item">
+                        <label>Target Encoder Transcode Format</label>
+                        <select class="input-control" id="ctrlFormat" style="background:#0f172a; cursor:pointer;">
+                            <option value="image/jpeg">JPEG Baseline Lossy Profile</option>
+                            <option value="image/png">PNG Lossless Structured Map</option>
+                            <option value="image/webp">WebP Modern Multi-Profile</option>
+                        </select>
+                    </div>
+                `;
+            }
+        }
+
+        function resetStudioState() {
+            document.getElementById('studioFileEngine').value = '';
+            document.getElementById('dropzoneIcon').innerText = "📥";
+            document.getElementById('dropzoneLabel').innerText = "Select or Drop Image Asset";
+            document.getElementById('dropzoneSubtext').innerText = "Supports JPG, PNG, WebP";
+            document.getElementById('previewPlaceholder').style.display = 'block';
+            document.getElementById('previewWrapper').style.display = 'none';
+            document.getElementById('engineStatusBadge').style.display = 'none';
+            systemLoadedImageAsset = null;
+        }
+
+        function loadMediaToEngine(event) {
+            const targetedAssetFile = event.target.files[0];
+            if (!targetedAssetFile) return;
+
+            originalAssetMetaName = targetedAssetFile.name.split('.')[0];
+            
+            document.getElementById('dropzoneIcon').innerText = "✅";
+            document.getElementById('dropzoneLabel').innerText = "Asset Registered";
+            document.getElementById('dropzoneSubtext').innerText = `${targetedAssetFile.name} [ ${(targetedAssetFile.size / 1024).toFixed(1)} KB ]`;
+
+            const assetReader = new FileReader();
+            assetReader.onload = function(readEvent) {
+                systemLoadedImageAsset = new Image();
+                systemLoadedImageAsset.onload = function() {
+                    if (selectedEngine === 'resize') {
+                        document.getElementById('ctrlWidth').value = systemLoadedImageAsset.width;
+                        document.getElementById('ctrlHeight').value = systemLoadedImageAsset.height;
+                    }
+                    
+                    document.getElementById('imageMonitorSource').src = readEvent.target.result;
+                    document.getElementById('previewPlaceholder').style.display = 'none';
+                    document.getElementById('previewWrapper').style.display = 'block';
+                    
+                    const badge = document.getElementById('engineStatusBadge');
+                    badge.innerText = `Source Resolution Matrix: ${systemLoadedImageAsset.width} x ${systemLoadedImageAsset.height}`;
+                    badge.style.display = 'inline-block';
+                };
+                systemLoadedImageAsset.src = readEvent.target.result;
+            };
+            assetReader.readAsDataURL(targetedAssetFile);
+        }
+
+        function executeImageTransformation() {
+            if (!systemLoadedImageAsset) {
+                alert("Runtime Exception: Please feed an image source to the pipeline first.");
+                return;
+            }
+
+            const activeRenderCanvas = document.createElement('canvas');
+            const targetRenderContext = activeRenderCanvas.getContext('2d');
+
+            let targetWidthMatrix = systemLoadedImageAsset.width;
+            let targetHeightMatrix = systemLoadedImageAsset.height;
+            let exportMimeEncoder = "image/jpeg";
+            let exportQualityScale = 0.9;
+
+            if (selectedEngine === 'resize') {
+                targetWidthMatrix = parseInt(document.getElementById('ctrlWidth').value) || targetWidthMatrix;
+                targetHeightMatrix = parseInt(document.getElementById('ctrlHeight').value) || targetHeightMatrix;
+            }
+            
+            activeRenderCanvas.width = targetWidthMatrix;
+            activeRenderCanvas.height = targetHeightMatrix;
+            targetRenderContext.drawImage(systemLoadedImageAsset, 0, 0, targetWidthMatrix, targetHeightMatrix);
+
+            if (selectedEngine === 'compress') {
+                const manualQualityValue = document.getElementById('ctrlQuality').value;
+                exportQualityScale = manualQualityValue / 100;
+            }
+
+            if (selectedEngine === 'convert') {
+                exportMimeEncoder = document.getElementById('ctrlFormat').value;
+            }
+
+            const targetedExtensionToken = exportMimeEncoder.split('/')[1];
+            const dataPackageUrl = activeRenderCanvas.toDataURL(exportMimeEncoder, exportQualityScale);
+            
+            const systemVirtualDownloadTrigger = document.createElement('a');
+            systemVirtualDownloadTrigger.download = `${originalAssetMetaName}_studio_build.${targetedExtensionToken}`;
+            systemVirtualDownloadTrigger.href = dataPackageUrl;
+            systemVirtualDownloadTrigger.click();
+        }
+    </script>
+</body>
+</html>
