@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Tools Hub - Mega Premium Studio v4</title>
-    <meta name="description" content="All-in-one Client-Side Suite: Compress, Resize, Convert, Crop, PDF to Image, and Image to PDF instantly.">
+    <title>Image Tools Hub - Studio v5 Fix</title>
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <style>
         :root {
@@ -27,7 +26,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            font-family: system-ui, -apple-system, sans-serif;
         }
 
         body {
@@ -39,7 +38,6 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            overflow-x: hidden;
         }
 
         header {
@@ -49,11 +47,7 @@
             align-items: center;
             background: rgba(11, 15, 25, 0.8);
             backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border);
-            position: sticky;
-            top: 0;
-            z-index: 100;
         }
 
         .logo {
@@ -62,28 +56,24 @@
             background: linear-gradient(to right, #6366f1, #a855f7);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
 
         .hero {
             text-align: center;
-            padding: 40px 20px 20px;
+            padding: 30px 20px 15px;
         }
 
         .hero h1 {
-            font-size: 38px;
+            font-size: 34px;
             font-weight: 800;
-            letter-spacing: -1px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             background: linear-gradient(to right, #ffffff, #cbd5e1);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .hero p {
-            font-size: 15px;
+            font-size: 14px;
             color: var(--text-dim);
         }
 
@@ -96,43 +86,37 @@
 
         .tools-selector {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 16px;
-            margin-bottom: 35px;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
         }
 
         .tool-card {
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 20px;
+            border-radius: 14px;
+            padding: 18px;
             text-align: left;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.2s ease;
             cursor: pointer;
         }
 
-        .tool-card:hover {
-            transform: translateY(-3px);
-            border-color: var(--border-glow);
-            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.08);
-        }
-
-        .tool-card.active {
-            background: rgba(99, 102, 241, 0.08);
+        .tool-card:hover, .tool-card.active {
             border-color: #6366f1;
-            box-shadow: 0 0 20px var(--primary-glow);
+            box-shadow: 0 0 15px var(--primary-glow);
+            transform: translateY(-2px);
         }
 
         .tool-card .icon-wrapper {
-            width: 44px;
-            height: 44px;
+            width: 40px;
+            height: 40px;
             background: var(--surface-accent);
-            border-radius: 12px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
-            margin-bottom: 14px;
+            font-size: 18px;
+            margin-bottom: 12px;
             border: 1px solid var(--border);
         }
 
@@ -140,149 +124,104 @@
             background: var(--primary);
         }
 
-        .tool-card h2 {
-            font-size: 16px;
-            margin-bottom: 6px;
-            font-weight: 700;
-        }
-
-        .tool-card p {
-            color: var(--text-dim);
-            font-size: 12px;
-            line-height: 1.4;
-        }
+        .tool-card h2 { font-size: 15px; margin-bottom: 5px; font-weight: 700; }
+        .tool-card p { color: var(--text-dim); font-size: 12px; line-height: 1.4; }
 
         .studio-workspace {
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 24px;
-            padding: 30px;
-            display: none;
-            animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
+            border-radius: 20px;
+            padding: 25px;
         }
 
         .studio-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 30px;
+            gap: 25px;
         }
 
-        @media(max-width: 900px) {
-            .studio-grid { grid-template-columns: 1fr; }
-        }
+        @media(max-width: 850px) { .studio-grid { grid-template-columns: 1fr; } }
 
         .panel-title {
-            font-size: 13px;
+            font-size: 12px;
             text-transform: uppercase;
             letter-spacing: 1px;
             color: var(--text-dim);
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             font-weight: 700;
         }
 
         .dropzone {
             border: 2px dashed rgba(99, 102, 241, 0.3);
             background: var(--surface-accent);
-            border-radius: 16px;
-            padding: 35px 20px;
+            border-radius: 14px;
+            padding: 30px 15px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.2s ease;
+            min-height: 150px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 170px;
-            position: relative;
         }
 
         .dropzone.dragover {
             border-color: #10b981 !important;
-            background: rgba(16, 185, 129, 0.12) !important;
-            box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
-            transform: scale(1.01);
+            background: rgba(16, 185, 129, 0.1) !important;
         }
 
-        .dropzone-icon, .dropzone div {
-            pointer-events: none;
-        }
-
-        .dropzone-icon {
-            font-size: 32px;
-            margin-bottom: 10px;
-        }
+        .dropzone-icon, .dropzone div, .dropzone p { pointer-events: none; }
+        .dropzone-icon { font-size: 30px; margin-bottom: 8px; }
 
         .control-box {
             background: var(--surface-accent);
             border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 20px;
-            margin-top: 20px;
+            border-radius: 14px;
+            padding: 18px;
+            margin-top: 15px;
         }
 
-        .form-item { margin-bottom: 16px; }
+        .form-item { margin-bottom: 14px; }
         .form-item:last-child { margin-bottom: 0; }
-
-        .form-item label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            color: #cbd5e1;
-            margin-bottom: 6px;
-        }
+        .form-item label { display: block; font-size: 12px; font-weight: 600; color: #cbd5e1; margin-bottom: 5px; }
 
         .input-control {
             width: 100%;
-            padding: 11px 14px;
+            padding: 10px 12px;
             background: #0f172a;
             border: 1px solid var(--border);
-            border-radius: 10px;
+            border-radius: 8px;
             color: white;
-            font-size: 14px;
+            font-size: 13px;
             outline: none;
         }
 
-        .input-control:focus {
-            border-color: #6366f1;
-            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
-        }
-
-        input[type="range"].input-control { padding: 0; height: 6px; cursor: pointer; }
+        input[type="range"].input-control { padding: 0; height: 5px; cursor: pointer; }
 
         .preview-panel {
             background: var(--surface-accent);
             border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 20px;
+            border-radius: 14px;
+            padding: 15px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 280px;
+            min-height: 250px;
             position: relative;
         }
 
         .canvas-preview-wrapper {
             max-width: 100%;
-            max-height: 300px;
+            max-height: 280px;
             position: relative;
-            border-radius: 10px;
-            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 8px;
             display: none;
             overflow: hidden;
         }
 
-        .crop-container-box {
-            position: relative;
-            display: inline-block;
-            max-width: 100%;
-        }
-
+        .crop-container-box { position: relative; display: inline-block; max-width: 100%; }
+        
         .crop-overlay-selector {
             position: absolute;
             border: 2px dashed #6366f1;
@@ -300,95 +239,35 @@
         .canvas-preview-wrapper img {
             display: block;
             max-width: 100%;
-            max-height: 300px;
+            max-height: 280px;
             object-fit: contain;
             user-select: none;
             -webkit-user-drag: none;
         }
 
-        .placeholder-text {
-            color: var(--text-dim);
-            font-size: 13px;
-            text-align: center;
-        }
+        .placeholder-text { color: var(--text-dim); font-size: 13px; text-align: center; }
 
         .badge-status {
             background: rgba(16, 185, 129, 0.15);
             color: var(--success);
-            padding: 5px 12px;
-            border-radius: 30px;
-            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
             font-weight: 600;
-            margin-top: 12px;
+            margin-top: 10px;
             display: none;
-            border: 1px solid rgba(16, 185, 129, 0.2);
         }
 
-        .action-container { margin-top: 20px; width: 100%; }
+        .action-container { margin-top: 15px; width: 100%; }
 
         .btn-primary {
             width: 100%;
-            padding: 13px;
+            padding: 12px;
             background: var(--primary);
             color: white;
             border: none;
-            border-radius: 12px;
+            border-radius: 10px;
             font-weight: 600;
             font-size: 14px;
             cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 4px 12px var(--primary-glow);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .btn-primary:hover { filter: brightness(1.1); transform: translateY(-1px); }
-
-        footer {
-            margin-top: auto;
-            text-align: center;
-            padding: 20px;
-            color: var(--text-dim);
-            border-top: 1px solid var(--border);
-            font-size: 12px;
-        }
-    </style>
-</head>
-<body>
-
-    <header>
-        <div class="logo">✨ ImageTools.studio</div>
-    </header>
-
-    <section class="hero">
-        <h1>All-in-One Media Transformation Suite</h1>
-        <p>6 Premium tools optimized with high-performance local canvas processing. Data stays 100% private.</p>
-    </section>
-
-    <div class="dashboard-container">
-        <div class="tools-selector">
-            <div class="tool-card" id="card-compress" onclick="switchStudio('compress')">
-                <div class="icon-wrapper">🗜️</div>
-                <h2>Compress Image</h2>
-                <p>Shrink file size footprint safely.</p>
-            </div>
-
-            <div class="tool-card" id="card-resize" onclick="switchStudio('resize')">
-                <div class="icon-wrapper">📏</div>
-                <h2>Resize Image</h2>
-                <p>Adjust width scale and height dimensions.</p>
-            </div>
-
-            <div class="tool-card" id="card-convert" onclick="switchStudio('convert')">
-                <div class="icon-wrapper">🔄</div>
-                <h2>Convert Format</h2>
-                <p>Transcode inside WebP, PNG, or JPG layers.</p>
-            </div>
-
-            <div class="tool-card" id="card-crop" onclick="switchStudio('crop')">
-                <div class="icon-wrapper">✂️</div>
-                <h2>Crop Image</h2>
-                <p>Cut pixel margins using region maps selectors.</p>
-            </div>
+            box-shadow: 0 4
