@@ -1,148 +1,272 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Image Tools Hub</title>
-<meta name="description" content="Free online image tools - Compress, Resize, Convert JPG, PNG and WebP images.">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Tools Hub - Ultra Premium</title>
+    <meta name="description" content="Free online image tools - Compress, Resize, Convert JPG, PNG and WebP images instantly.">
+    <style>
+        :root {
+            --bg-dark: #090d16;
+            --card-bg: rgba(30, 41, 59, 0.4);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --primary: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            --primary-hover: linear-gradient(135deg, #2563eb, #7c3aed);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
 
-<style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-body{
-background:linear-gradient(135deg,#0f172a,#1e293b);
-color:white;
-min-height:100vh;
-}
+        body {
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.15) 0, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.15) 0, transparent 50%);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
 
-header{
-padding:20px 5%;
-display:flex;
-justify-content:space-between;
-align-items:center;
-}
+        header {
+            padding: 25px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
 
-.logo{
-font-size:28px;
-font-weight:bold;
-}
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            background: var(--primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
 
-.hero{
-text-align:center;
-padding:80px 20px;
-}
+        .hero {
+            text-align: center;
+            padding: 60px 20px 40px;
+        }
 
-.hero h1{
-font-size:48px;
-margin-bottom:15px;
-}
+        .hero h1 {
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            letter-spacing: -1px;
+            background: linear-gradient(to right, #ffffff, #cbd5e1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-.hero p{
-font-size:18px;
-color:#cbd5e1;
-}
+        .hero p {
+            font-size: 17px;
+            color: var(--text-muted);
+        }
 
-.tools{
-max-width:1200px;
-margin:auto;
-padding:40px 20px;
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:25px;
-}
+        /* Tools Hub Layout */
+        .tools-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            width: 100%;
+        }
 
-.card{
-background:rgba(255,255,255,.08);
-backdrop-filter:blur(12px);
-padding:25px;
-border-radius:20px;
-text-align:center;
-transition:.3s;
-}
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
 
-.card:hover{
-transform:translateY(-5px);
-}
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 30px;
+            border-radius: 24px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
 
-.card h2{
-margin-bottom:10px;
-}
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: 24px;
+            padding: 2px;
+            background: linear-gradient(to bottom bottom, rgba(255,255,255,0.1), transparent);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
 
-.card p{
-color:#cbd5e1;
-margin-bottom:20px;
-}
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(139, 92, 246, 0.4);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
 
-.btn{
-display:inline-block;
-padding:12px 20px;
-background:linear-gradient(90deg,#3b82f6,#8b5cf6);
-color:white;
-text-decoration:none;
-border-radius:12px;
-}
+        .card .icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
 
-footer{
-text-align:center;
-padding:30px;
-color:#94a3b8;
-}
+        .card h2 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #fff;
+        }
 
-@media(max-width:768px){
-.hero h1{
-font-size:34px;
-}
-}
-</style>
+        .card p {
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* Dynamic Tool Workspace Section */
+        .workspace {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px dashed rgba(255, 255, 255, 0.15);
+            border-radius: 24px;
+            padding: 40px 20px;
+            margin-top: 20px;
+            display: none;
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .workspace h3 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            background: var(--primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Form elements & Custom components */
+        .upload-box {
+            border: 2px dashed rgba(59, 130, 246, 0.4);
+            padding: 40px;
+            border-radius: 16px;
+            background: rgba(0,0,0,0.2);
+            cursor: pointer;
+            max-width: 500px;
+            margin: 0 auto 25px;
+            transition: 0.3s;
+        }
+
+        .upload-box:hover {
+            background: rgba(59, 130, 246, 0.05);
+            border-color: #3b82f6;
+        }
+
+        .control-group {
+            max-width: 400px;
+            margin: 20px auto;
+            text-align: left;
+        }
+
+        .control-group label {
+            display: block;
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: white;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .input-field:focus {
+            border-color: #3b82f6;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 28px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        .preview-box {
+            margin-top: 25px;
+            display: none;
+        }
+
+        .preview-box img {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .info-text {
+            font-size: 13px;
+            color: #10b981;
+            margin-top: 10px;
+        }
+
+        footer {
+            margin-top: auto;
+            text-align: center;
+            padding: 30px;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            font-size: 14px;
+        }
+
+        @media(max-width:768px){
+            .hero h1 { font-size: 32px; }
+            .tools-grid { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
-
 <body>
 
-<header>
-<div class="logo">🖼 Image Tools Hub</div>
-</header>
+    <header>
+        <div class="logo">🖼️ Image Tools Hub</div>
+    </header>
 
-<section class="hero">
-<h1>Free Online Image Tools</h1>
-<p>Compress, Resize and Convert Images Instantly</p>
-</section>
-
-<section class="tools">
-
-<div class="card">
-<h2>🗜 Image Compressor</h2>
-<p>Reduce image size without losing quality.</p>
-<a href="compressor.html" class="btn">Open Tool</a>
-</div>
-
-<div class="card">
-<h2>📏 Image Resizer</h2>
-<p>Resize images to any width and height.</p>
-<a href="resizer.html" class="btn">Open Tool</a>
-</div>
-
-<div class="card">
-<h2>🔄 JPG → PNG</h2>
-<p>Convert JPG images to PNG format.</p>
-<a href="converter.html" class="btn">Open Tool</a>
-</div>
-
-<div class="card">
-<h2>⚡ PNG → WebP</h2>
-<p>Convert PNG images to WebP format.</p>
-<a href="converter.html" class="btn">Open Tool</a>
-</div>
-
-</section>
-
-<footer>
-© 2026 Image Tools Hub. All Rights Reserved.
-</footer>
-
-</body>
-</html>
+    <section class="hero">
