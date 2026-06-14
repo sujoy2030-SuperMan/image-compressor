@@ -3,8 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Tools Hub - Premium Studio v3</title>
-    <meta name="description" content="Free online image tools - Compress, Resize, Convert JPG, PNG and WebP images instantly with active Drag and Drop.">
+    <title>Image Tools Hub - Mega Premium Studio</title>
+    <meta name="description" content="All-in-one Client-Side Suite: Compress, Resize, Convert, Crop, PDF to Image, and Image to PDF instantly.">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
     <style>
         :root {
             --bg-base: #0b0f19;
@@ -65,11 +69,11 @@
 
         .hero {
             text-align: center;
-            padding: 50px 20px 30px;
+            padding: 40px 20px 20px;
         }
 
         .hero h1 {
-            font-size: 40px;
+            font-size: 38px;
             font-weight: 800;
             letter-spacing: -1px;
             margin-bottom: 12px;
@@ -79,7 +83,7 @@
         }
 
         .hero p {
-            font-size: 16px;
+            font-size: 15px;
             color: var(--text-dim);
         }
 
@@ -90,46 +94,46 @@
             width: 100%;
         }
 
+        /* Responsive 6-Grid Selector for Toolkit routes */
         .tools-selector {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+            margin-bottom: 35px;
         }
 
         .tool-card {
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 25px;
+            border-radius: 16px;
+            padding: 20px;
             text-align: left;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
-            position: relative;
         }
 
         .tool-card:hover {
-            transform: translateY(-4px);
+            transform: translateY(-3px);
             border-color: var(--border-glow);
-            box-shadow: 0 12px 30px rgba(99, 102, 241, 0.1);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.08);
         }
 
         .tool-card.active {
-            background: rgba(99, 102, 241, 0.1);
+            background: rgba(99, 102, 241, 0.08);
             border-color: #6366f1;
-            box-shadow: 0 0 25px var(--primary-glow);
+            box-shadow: 0 0 20px var(--primary-glow);
         }
 
         .tool-card .icon-wrapper {
-            width: 50px;
-            height: 50px;
+            width: 44px;
+            height: 44px;
             background: var(--surface-accent);
-            border-radius: 14px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
-            margin-bottom: 18px;
+            font-size: 20px;
+            margin-bottom: 14px;
             border: 1px solid var(--border);
         }
 
@@ -138,15 +142,15 @@
         }
 
         .tool-card h2 {
-            font-size: 18px;
-            margin-bottom: 8px;
+            font-size: 16px;
+            margin-bottom: 6px;
             font-weight: 700;
         }
 
         .tool-card p {
             color: var(--text-dim);
-            font-size: 13px;
-            line-height: 1.5;
+            font-size: 12px;
+            line-height: 1.4;
         }
 
         .studio-workspace {
@@ -159,7 +163,7 @@
         }
 
         @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -167,7 +171,6 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 30px;
-            margin-top: 20px;
         }
 
         @media(max-width: 900px) {
@@ -175,23 +178,19 @@
         }
 
         .panel-title {
-            font-size: 14px;
+            font-size: 13px;
             text-transform: uppercase;
             letter-spacing: 1px;
             color: var(--text-dim);
             margin-bottom: 15px;
             font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
 
-        /* Fixed Pointer Target Zone */
         .dropzone {
             border: 2px dashed rgba(99, 102, 241, 0.3);
             background: var(--surface-accent);
             border-radius: 16px;
-            padding: 40px 20px;
+            padding: 35px 20px;
             text-align: center;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -199,31 +198,23 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 180px;
-            position: relative;
+            min-height: 170px;
         }
 
         .dropzone.dragover {
             border-color: #10b981 !important;
             background: rgba(16, 185, 129, 0.12) !important;
             box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
-            transform: scale(1.02);
-        }
-
-        .dropzone:hover {
-            border-color: #6366f1;
-            background: rgba(99, 102, 241, 0.03);
+            transform: scale(1.01);
         }
 
         .dropzone-icon {
-            font-size: 36px;
-            margin-bottom: 12px;
+            font-size: 32px;
+            margin-bottom: 10px;
             pointer-events: none;
         }
 
-        .dropzone div {
-            pointer-events: none;
-        }
+        .dropzone div { pointer-events: none; }
 
         .control-box {
             background: var(--surface-accent);
@@ -233,10 +224,7 @@
             margin-top: 20px;
         }
 
-        .form-item {
-            margin-bottom: 18px;
-        }
-
+        .form-item { margin-bottom: 16px; }
         .form-item:last-child { margin-bottom: 0; }
 
         .form-item label {
@@ -244,19 +232,18 @@
             font-size: 13px;
             font-weight: 600;
             color: #cbd5e1;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .input-control {
             width: 100%;
-            padding: 12px 16px;
+            padding: 11px 14px;
             background: #0f172a;
             border: 1px solid var(--border);
             border-radius: 10px;
             color: white;
             font-size: 14px;
             outline: none;
-            transition: 0.2s;
         }
 
         .input-control:focus {
@@ -264,12 +251,7 @@
             box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
         }
 
-        input[type="range"].input-control {
-            padding: 0;
-            height: 6px;
-            background: #1e293b;
-            cursor: pointer;
-        }
+        input[type="range"].input-control { padding: 0; height: 6px; cursor: pointer; }
 
         .preview-panel {
             background: var(--surface-accent);
@@ -280,81 +262,89 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 300px;
+            min-height: 280px;
             position: relative;
         }
 
         .canvas-preview-wrapper {
             max-width: 100%;
-            max-height: 320px;
-            overflow: hidden;
+            max-height: 300px;
+            overflow: auto;
             border-radius: 10px;
             border: 1px solid rgba(255,255,255,0.05);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
             display: none;
+        }
+
+        /* Specific interface support box for Crop overlay box mapping */
+        .crop-container-box {
+            position: relative;
+            display: inline-block;
+        }
+        .crop-overlay-selector {
+            position: absolute;
+            border: 2px dashed #6366f1;
+            background: rgba(99, 102, 241, 0.25);
+            cursor: move;
+            display: none;
+            box-shadow: 0 0 0 4000px rgba(0, 0, 0, 0.6);
         }
 
         .canvas-preview-wrapper img {
             display: block;
             max-width: 100%;
-            max-height: 320px;
+            max-height: 300px;
             object-fit: contain;
+            user-select: none;
+            -webkit-user-drag: none;
         }
 
         .placeholder-text {
             color: var(--text-dim);
-            font-size: 14px;
+            font-size: 13px;
             text-align: center;
         }
 
         .badge-status {
             background: rgba(16, 185, 129, 0.15);
             color: var(--success);
-            padding: 6px 14px;
+            padding: 5px 12px;
             border-radius: 30px;
             font-size: 12px;
             font-weight: 600;
-            margin-top: 15px;
+            margin-top: 12px;
             display: none;
             border: 1px solid rgba(16, 185, 129, 0.2);
         }
 
-        .action-container {
-            margin-top: 20px;
-            width: 100%;
-        }
+        .action-container { margin-top: 20px; width: 100%; }
 
         .btn-primary {
             width: 100%;
-            padding: 14px;
+            padding: 13px;
             background: var(--primary);
             color: white;
             border: none;
             border-radius: 12px;
             font-weight: 600;
-            font-size: 15px;
+            font-size: 14px;
             cursor: pointer;
             transition: all 0.2s;
-            box-shadow: 0 4px 15px var(--primary-glow);
+            box-shadow: 0 4px 12px var(--primary-glow);
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
         }
 
-        .btn-primary:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
-            filter: brightness(1.1);
-        }
+        .btn-primary:hover { filter: brightness(1.1); transform: translateY(-1px); }
 
         footer {
             margin-top: auto;
             text-align: center;
-            padding: 25px;
+            padding: 20px;
             color: var(--text-dim);
             border-top: 1px solid var(--border);
-            font-size: 13px;
+            font-size: 12px;
         }
     </style>
 </head>
@@ -365,277 +355,34 @@
     </header>
 
     <section class="hero">
-        <h1>Optimize & Transform Images</h1>
-        <p>Your media stays completely private. Drag, drop, and process instantly inside your browser safely.</p>
+        <h1>All-in-One Media Transformation Suite</h1>
+        <p>6 Premium tools optimized with high-performance local canvas processing. Data stays 100% private.</p>
     </section>
 
     <div class="dashboard-container">
         <div class="tools-selector">
             <div class="tool-card" id="card-compress" onclick="switchStudio('compress')">
                 <div class="icon-wrapper">🗜️</div>
-                <h2>Compress Size</h2>
-                <p>Shrink storage and network weight footprint without sacrificing pixels.</p>
+                <h2>Compress Image</h2>
+                <p>Shrink file size data map footprints safely.</p>
             </div>
 
             <div class="tool-card" id="card-resize" onclick="switchStudio('resize')">
                 <div class="icon-wrapper">📏</div>
-                <h2>Adjust Dimensions</h2>
-                <p>Resize pixel widths, height parameters using advanced box ratios.</p>
+                <h2>Resize Image</h2>
+                <p>Adjust width scale and explicit dimensions.</p>
             </div>
 
             <div class="tool-card" id="card-convert" onclick="switchStudio('convert')">
                 <div class="icon-wrapper">🔄</div>
-                <h2>Format Engine</h2>
-                <p>Transcode media structures directly into modern WebP, PNG, or JPG formats.</p>
+                <h2>Convert Format</h2>
+                <p>Transcode inside WebP, PNG, or JPG layers.</p>
             </div>
-        </div>
 
-        <div id="studioWorkspace" class="studio-workspace">
-            <div class="studio-grid">
-                
-                <div class="panel-column">
-                    <div class="panel-title">⚙️ Control Configurations</div>
-                    
-                    <input type="file" id="studioFileEngine" accept="image/*" style="display: none;" onchange="loadMediaToEngine(event)">
-                    
-                    <div class="dropzone" id="dropzoneContainer">
-                        <div class="dropzone-icon" id="dropzoneIcon">📥</div>
-                        <div id="dropzoneLabel" style="font-weight: 600; font-size: 14px;">Select or Drop Image Asset</div>
-                        <div id="dropzoneSubtext" style="color: var(--text-dim); font-size: 12px; margin-top: 4px;">Supports JPG, PNG, WebP</div>
-                    </div>
-
-                    <div class="control-box" id="dynamicControlsContainer">
-                        </div>
-                </div>
-
-                <div class="panel-column" style="display: flex; flex-direction: column;">
-                    <div class="panel-title">👁️ Live Monitor Screen</div>
-                    
-                    <div class="preview-panel">
-                        <div class="placeholder-text" id="previewPlaceholder">
-                            Upload or drag an asset file into the configuration block to activate output monitor view.
-                        </div>
-                        <div class="canvas-preview-wrapper" id="previewWrapper">
-                            <img id="imageMonitorSource" src="" alt="Monitor Screen Output Asset">
-                        </div>
-                        <div class="badge-status" id="engineStatusBadge">Asset Loaded Successfully</div>
-                    </div>
-
-                    <div class="action-container">
-                        <button class="btn-primary" id="masterExecutionBtn" onclick="executeImageTransformation()">
-                            ⚡ Export Output Asset
-                        </button>
-                    </div>
-                </div>
-
+            <div class="tool-card" id="card-crop" onclick="switchStudio('crop')">
+                <div class="icon-wrapper">✂️</div>
+                <h2>Crop Image</h2>
+                <p>Cut pixel margins using region maps selectors.</p>
             </div>
-        </div>
-    </div>
 
-    <footer>
-        &copy; 2026 ImageTools Studio. Powered by Pure Engine Components.
-    </footer>
-
-    <script>
-        let selectedEngine = '';
-        let systemLoadedImageAsset = null;
-        let originalAssetMetaName = 'processed_media';
-
-        function switchStudio(engineType) {
-            selectedEngine = engineType;
-            
-            document.querySelectorAll('.tool-card').forEach(c => c.classList.remove('active'));
-            document.getElementById(`card-${engineType}`).classList.add('active');
-
-            const workspace = document.getElementById('studioWorkspace');
-            const targetControls = document.getElementById('dynamicControlsContainer');
-            
-            resetStudioState();
-            workspace.style.display = 'block';
-            workspace.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-
-            if (engineType === 'compress') {
-                targetControls.innerHTML = `
-                    <div class="form-item">
-                        <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-                            <label style="margin:0;">Compression Profile Level</label>
-                            <span id="sliderMetaValue" style="font-size:12px; color:#6366f1; font-weight:700;">50%</span>
-                        </div>
-                        <input type="range" class="input-control" id="ctrlQuality" min="0" max="90" value="50" oninput="document.getElementById('sliderMetaValue').innerText = this.value + '%'">
-                        <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-dim); margin-top: 5px;">
-                            <span>High Quality</span>
-                            <span>Max Compression</span>
-                        </div>
-                    </div>
-                `;
-            } else if (engineType === 'resize') {
-                targetControls.innerHTML = `
-                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
-                        <div class="form-item">
-                            <label>Target Width (px)</label>
-                            <input type="number" class="input-control" id="ctrlWidth" placeholder="Width">
-                        </div>
-                        <div class="form-item">
-                            <label>Target Height (px)</label>
-                            <input type="number" class="input-control" id="ctrlHeight" placeholder="Height">
-                        </div>
-                    </div>
-                `;
-            } else if (engineType === 'convert') {
-                targetControls.innerHTML = `
-                    <div class="form-item">
-                        <label>Target Encoder Transcode Format</label>
-                        <select class="input-control" id="ctrlFormat" style="background:#0f172a; cursor:pointer;">
-                            <option value="image/jpeg">JPEG Baseline Lossy Profile</option>
-                            <option value="image/png">PNG Lossless Structured Map</option>
-                            <option value="image/webp">WebP Modern Multi-Profile</option>
-                        </select>
-                    </div>
-                `;
-            }
-        }
-
-        function resetStudioState() {
-            document.getElementById('studioFileEngine').value = '';
-            document.getElementById('dropzoneIcon').innerText = "📥";
-            document.getElementById('dropzoneLabel').innerText = "Select or Drop Image Asset";
-            document.getElementById('dropzoneSubtext').innerText = "Supports JPG, PNG, WebP";
-            document.getElementById('previewPlaceholder').style.display = 'block';
-            document.getElementById('previewWrapper').style.display = 'none';
-            document.getElementById('engineStatusBadge').style.display = 'none';
-            systemLoadedImageAsset = null;
-        }
-
-        // Global Event Pipeline for Absolute Drag & Drop Security
-        const dropzone = document.getElementById('dropzoneContainer');
-
-        // Prevent browser from opening file on drop natively
-        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            dropzone.addEventListener(eventName, (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-            }, false);
-            document.body.addEventListener(eventName, (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-            }, false);
-        });
-
-        // Trigger styles on hover drag
-        ['dragenter', 'dragover'].forEach(eventName => {
-            dropzone.addEventListener(eventName, () => {
-                dropzone.classList.add('dragover');
-            }, false);
-        });
-
-        ['dragleave', 'drop'].forEach(eventName => {
-            dropzone.addEventListener(eventName, () => {
-                dropzone.classList.remove('dragover');
-            }, false);
-        });
-
-        // Main Drop Listener Trigger
-        dropzone.addEventListener('drop', (e) => {
-            const dt = e.dataTransfer;
-            const files = dt.files;
-            if (files && files.length > 0) {
-                processFileAsset(files[0]);
-            }
-        }, false);
-
-        // Standard Click upload trigger map
-        dropzone.addEventListener('click', () => {
-            document.getElementById('studioFileEngine').click();
-        });
-
-        function loadMediaToEngine(event) {
-            const targetedAssetFile = event.target.files[0];
-            if (targetedAssetFile) processFileAsset(targetedAssetFile);
-        }
-
-        function processFileAsset(file) {
-            if (!file.type.startsWith('image/')) {
-                alert("File Format Incompatible: Standard Image file select koro!");
-                return;
-            }
-            
-            originalAssetMetaName = file.name.split('.')[0];
-            
-            document.getElementById('dropzoneIcon').innerText = "✅";
-            document.getElementById('dropzoneLabel').innerText = "Asset Registered Successfully";
-            document.getElementById('dropzoneSubtext').innerText = `${file.name} [ ${(file.size / 1024).toFixed(1)} KB ]`;
-
-            const assetReader = new FileReader();
-            assetReader.onload = function(readEvent) {
-                systemLoadedImageAsset = new Image();
-                systemLoadedImageAsset.onload = function() {
-                    if (selectedEngine === 'resize') {
-                        if (document.getElementById('ctrlWidth')) {
-                            document.getElementById('ctrlWidth').value = systemLoadedImageAsset.width;
-                        }
-                        if (document.getElementById('ctrlHeight')) {
-                            document.getElementById('ctrlHeight').value = systemLoadedImageAsset.height;
-                        }
-                    }
-                    
-                    document.getElementById('imageMonitorSource').src = readEvent.target.result;
-                    document.getElementById('previewPlaceholder').style.display = 'none';
-                    document.getElementById('previewWrapper').style.display = 'block';
-                    
-                    const badge = document.getElementById('engineStatusBadge');
-                    badge.innerText = `Source Resolution Matrix: ${systemLoadedImageAsset.width} x ${systemLoadedImageAsset.height}`;
-                    badge.style.display = 'inline-block';
-                };
-                systemLoadedImageAsset.src = readEvent.target.result;
-            };
-            assetReader.readAsDataURL(file);
-        }
-
-        function executeImageTransformation() {
-            if (!systemLoadedImageAsset) {
-                alert("Pipeline Error: Age asset drag ba select koro!");
-                return;
-            }
-
-            const activeRenderCanvas = document.createElement('canvas');
-            const targetRenderContext = activeRenderCanvas.getContext('2d');
-
-            let targetWidthMatrix = systemLoadedImageAsset.width;
-            let targetHeightMatrix = systemLoadedImageAsset.height;
-            let exportMimeEncoder = "image/jpeg";
-            let exportQualityScale = 0.9;
-
-            if (selectedEngine === 'resize') {
-                targetWidthMatrix = parseInt(document.getElementById('ctrlWidth').value) || targetWidthMatrix;
-                targetHeightMatrix = parseInt(document.getElementById('ctrlHeight').value) || targetHeightMatrix;
-            }
-            
-            activeRenderCanvas.width = targetWidthMatrix;
-            activeRenderCanvas.height = targetHeightMatrix;
-            targetRenderContext.drawImage(systemLoadedImageAsset, 0, 0, targetWidthMatrix, targetHeightMatrix);
-
-            if (selectedEngine === 'compress') {
-                const manualQualityValue = document.getElementById('ctrlQuality').value;
-                exportQualityScale = (100 - manualQualityValue) / 100;
-            }
-
-            if (selectedEngine === 'convert') {
-                exportMimeEncoder = document.getElementById('ctrlFormat').value;
-            }
-
-            const targetedExtensionToken = exportMimeEncoder.split('/')[1];
-            const dataPackageUrl = activeRenderCanvas.toDataURL(exportMimeEncoder, exportQualityScale);
-            
-            const systemVirtualDownloadTrigger = document.createElement('a');
-            systemVirtualDownloadTrigger.download = `${originalAssetMetaName}_studio_build.${targetedExtensionToken}`;
-            systemVirtualDownloadTrigger.href = dataPackageUrl;
-            systemVirtualDownloadTrigger.click();
-        }
-
-        // Initialize default tool on page load
-        window.onload = function() {
-            switchStudio('compress');
-        };
-    </script>
-</body>
-</html>
+            <div class="
