@@ -3,206 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Media Studio Engine - Ultimate Fixed Build</title>
-    
+    <title>Media Studio Engine</title>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
 
-        body {
-            background-color: #0b0f19;
-            color: #f8fafc;
-            min-height: 100vh;
-            padding: 0;
-        }
+        body { background-color: #0b0f19; color: #f8fafc; min-height: 100vh; display: flex; flex-direction: column; }
 
-        header {
-            padding: 20px 30px;
-            background: #111827;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-        }
+        header { padding: 20px 30px; background: #111827; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .logo { font-size: 22px; font-weight: 800; color: #6366f1; }
 
-        .logo {
-            font-size: 22px;
-            font-weight: 800;
-            color: #6366f1;
-        }
+        .hero { text-align: center; padding: 40px 20px 20px; }
+        .hero h1 { font-size: 32px; font-weight: 800; margin-bottom: 8px; color: #fff; }
+        .hero p { font-size: 14px; color: #94a3b8; }
 
-        .hero {
-            text-align: center;
-            padding: 40px 20px 20px;
-        }
+        .main-dashboard-wrap { max-width: 1200px; margin: 0 auto; padding: 20px; flex: 1; }
 
-        .hero h1 {
-            font-size: 32px;
-            font-weight: 800;
-            margin-bottom: 8px;
-            color: #ffffff;
-        }
-
-        .hero p {
-            font-size: 14px;
-            color: #94a3b8;
-        }
-
-        .main-dashboard-wrap {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .cards-selection-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 30px;
-            width: 100%;
-        }
+        .cards-selection-container { display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 30px; }
 
         .tool-action-card {
-            background: #111827;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
-            padding: 20px;
-            flex: 1;
-            min-width: 250px;
-            cursor: pointer;
-            transition: all 0.2s ease;
+            background: #111827; border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px; padding: 20px; flex: 1; min-width: 160px;
+            cursor: pointer; transition: all 0.2s ease;
         }
-
         .tool-action-card:hover, .tool-action-card.active {
-            border-color: #6366f1;
-            background: #1e293b;
+            border-color: #6366f1; background: #1e293b;
         }
-
-        .card-icon {
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
-
-        .tool-action-card h3 {
-            font-size: 16px;
-            margin-bottom: 5px;
-            color: #ffffff;
-        }
-
-        .tool-action-card p {
-            font-size: 12px;
-            color: #94a3b8;
-            line-height: 1.4;
-        }
+        .card-icon { font-size: 24px; margin-bottom: 10px; }
+        .tool-action-card h3 { font-size: 15px; margin-bottom: 4px; color: #fff; }
+        .tool-action-card p { font-size: 12px; color: #94a3b8; line-height: 1.4; }
 
         .studio-workspace-wrapper {
-            background: #111827;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 16px;
-            padding: 25px;
-            width: 100%;
+            background: #111827; border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px; padding: 25px;
         }
+        .studio-columns-split { display: flex; gap: 30px; }
+        @media (max-width: 800px) { .studio-columns-split { flex-direction: column; } }
 
-        .studio-columns-split {
-            display: flex;
-            flex-direction: row;
-            gap: 30px;
-        }
-
-        @media (max-width: 800px) {
-            .studio-columns-split {
-                flex-direction: column;
-            }
-        }
-
-        .workspace-column {
-            flex: 1;
-            min-width: 290px;
-        }
+        .workspace-column { flex: 1; min-width: 0; }
 
         .panel-heading-title {
-            font-size: 12px;
-            text-transform: uppercase;
-            color: #94a3b8;
-            font-weight: 700;
-            margin-bottom: 15px;
-            letter-spacing: 0.5px;
+            font-size: 11px; text-transform: uppercase; color: #94a3b8;
+            font-weight: 700; margin-bottom: 15px; letter-spacing: 0.5px;
         }
 
         .dropzone-upload-area {
-            border: 2px dashed rgba(99, 102, 241, 0.4);
-            background: #0f172a;
-            border-radius: 12px;
-            padding: 40px 20px;
-            text-align: center;
-            cursor: pointer;
-            margin-bottom: 20px;
+            border: 2px dashed rgba(99,102,241,0.4); background: #0f172a;
+            border-radius: 12px; padding: 40px 20px; text-align: center;
+            cursor: pointer; margin-bottom: 20px; transition: all 0.2s;
         }
-
-        .dropzone-upload-area.dragover {
-            border-color: #10b981 !important;
-            background: rgba(16, 185, 129, 0.1) !important;
-        }
+        .dropzone-upload-area.dragover { border-color: #10b981; background: rgba(16,185,129,0.1); }
 
         .control-box-options {
-            background: #0f172a;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 20px;
+            background: #0f172a; border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px; padding: 20px;
         }
 
-        .form-row-item {
-            margin-bottom: 15px;
-        }
-
+        .form-row-item { margin-bottom: 15px; }
+        .form-row-item:last-child { margin-bottom: 0; }
         .form-row-item label {
-            display: block;
-            font-size: 12px;
-            color: #cbd5e1;
-            margin-bottom: 6px;
-            font-weight: 600;
+            display: block; font-size: 12px; color: #cbd5e1;
+            margin-bottom: 6px; font-weight: 600;
         }
-
         .input-element-field {
-            width: 100%;
-            padding: 10px 12px;
-            background: #0b0f19;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            color: white;
-            font-size: 13px;
-            outline: none;
+            width: 100%; padding: 10px 12px; background: #0b0f19;
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;
+            color: white; font-size: 13px; outline: none;
         }
-
-        input[type="range"].input-element-field {
-            padding: 0;
-            height: 6px;
-        }
+        input[type="range"].input-element-field { padding: 6px 0; height: auto; cursor: pointer; }
 
         .preview-monitor-frame {
-            background: #0f172a;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 20px;
-            min-height: 250px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            position: relative;
+            background: #0f172a; border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px; padding: 20px; min-height: 250px;
+            display: flex; align-items: center; justify-content: center;
+            flex-direction: column; position: relative; overflow: hidden;
         }
 
-        .canvas-source-wrapper {
+        .canvas-source-wrapper { max-width: 100%; display: none; }
+
+        /* Crop container holds the image + overlay together */
+        #cropBoxParentWrapper {
+            position: relative;
+            display: inline-block;
             max-width: 100%;
-            display: none;
-            position: relative;
+            line-height: 0;
         }
 
-        .canvas-source-wrapper img {
+        #cropBoxParentWrapper img {
             max-width: 100%;
             max-height: 300px;
             object-fit: contain;
@@ -211,70 +101,663 @@
 
         .crop-bounding-selector-box {
             position: absolute;
-            border: 2px dashed #6366f1;
-            background: rgba(99, 102, 241, 0.25);
+            border: 2px solid #6366f1;
+            background: rgba(99,102,241,0.2);
             cursor: move;
             display: none;
-            box-shadow: 0 0 0 5000px rgba(0, 0, 0, 0.6);
-            top: 10px;
-            left: 10px;
-            width: 120px;
-            height: 120px;
             z-index: 5;
+            /* box-shadow creates the darkened outside-crop overlay */
+            box-shadow: 0 0 0 9999px rgba(0,0,0,0.55);
         }
 
-        .placeholder-monitor-text {
-            color: #94a3b8;
-            font-size: 13px;
-            text-align: center;
+        /* Resize handles on crop box */
+        .crop-handle {
+            position: absolute;
+            width: 10px; height: 10px;
+            background: #6366f1;
+            border: 1px solid #fff;
+            border-radius: 2px;
+            z-index: 6;
         }
+        .crop-handle.nw { top: -5px; left: -5px; cursor: nw-resize; }
+        .crop-handle.ne { top: -5px; right: -5px; cursor: ne-resize; }
+        .crop-handle.sw { bottom: -5px; left: -5px; cursor: sw-resize; }
+        .crop-handle.se { bottom: -5px; right: -5px; cursor: se-resize; }
+
+        .placeholder-monitor-text { color: #94a3b8; font-size: 13px; text-align: center; line-height: 1.6; }
 
         .engine-logs-badge {
-            background: rgba(16, 185, 129, 0.15);
-            color: #10b981;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 600;
-            margin-top: 15px;
-            display: none;
+            background: rgba(16,185,129,0.15); color: #10b981;
+            padding: 5px 12px; border-radius: 20px; font-size: 11px;
+            font-weight: 600; margin-top: 12px; display: none;
         }
 
         .trigger-action-btn {
-            width: 100%;
-            padding: 14px;
+            width: 100%; padding: 14px;
             background: linear-gradient(135deg, #4f46e5, #7c3aed);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-            margin-top: 20px;
+            color: white; border: none; border-radius: 10px;
+            font-weight: 600; font-size: 14px; cursor: pointer;
+            margin-top: 20px; transition: filter 0.15s;
         }
+        .trigger-action-btn:hover { filter: brightness(1.12); }
+        .trigger-action-btn:disabled { opacity: 0.5; cursor: not-allowed; filter: none; }
 
-        .trigger-action-btn:hover {
-            filter: brightness(1.1);
+        .progress-bar-wrap {
+            width: 100%; background: #1e293b; border-radius: 6px;
+            height: 6px; margin-top: 12px; display: none; overflow: hidden;
         }
-
-        .engine-panel-box {
-            display: none;
-        }
-        .engine-panel-box.active {
-            display: block;
+        .progress-bar-fill {
+            height: 100%; background: linear-gradient(90deg, #6366f1, #10b981);
+            border-radius: 6px; width: 0%; transition: width 0.3s;
         }
 
         footer {
-            margin-top: auto;
-            text-align: center;
-            padding: 20px;
-            color: #94a3b8;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            font-size: 12px;
+            text-align: center; padding: 20px;
+            color: #94a3b8; border-top: 1px solid rgba(255,255,255,0.08); font-size: 12px;
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo">✨
+<header>
+    <div class="logo">✨ ImageTools.studio</div>
+</header>
+
+<section class="hero">
+    <h1>All-in-One Media Transformation Suite</h1>
+    <p>Client-side processing — your files never leave your device.</p>
+</section>
+
+<div class="main-dashboard-wrap">
+
+    <div class="cards-selection-container">
+        <div class="tool-action-card active" id="card-compress" data-engine="compress">
+            <div class="card-icon">🗜️</div>
+            <h3>Compress</h3>
+            <p>Reduce file size with quality control.</p>
+        </div>
+        <div class="tool-action-card" id="card-resize" data-engine="resize">
+            <div class="card-icon">📏</div>
+            <h3>Resize</h3>
+            <p>Change image dimensions in pixels.</p>
+        </div>
+        <div class="tool-action-card" id="card-convert" data-engine="convert">
+            <div class="card-icon">🔄</div>
+            <h3>Convert</h3>
+            <p>Convert between JPG, PNG, and WebP.</p>
+        </div>
+        <div class="tool-action-card" id="card-crop" data-engine="crop">
+            <div class="card-icon">✂️</div>
+            <h3>Crop</h3>
+            <p>Drag the box to select a region to keep.</p>
+        </div>
+        <div class="tool-action-card" id="card-pdf2img" data-engine="pdf2img">
+            <div class="card-icon">📄</div>
+            <h3>PDF → Image</h3>
+            <p>Export each PDF page as a JPG file.</p>
+        </div>
+        <div class="tool-action-card" id="card-img2pdf" data-engine="img2pdf">
+            <div class="card-icon">📑</div>
+            <h3>Image → PDF</h3>
+            <p>Pack one image into a PDF document.</p>
+        </div>
+    </div>
+
+    <div class="studio-workspace-wrapper">
+        <div class="studio-columns-split">
+
+            <div class="workspace-column">
+                <div class="panel-heading-title">⚙️ Controls</div>
+
+                <input type="file" id="studioFileEngine" style="display:none;">
+
+                <div class="dropzone-upload-area" id="dropzoneContainer">
+                    <div style="font-size:32px; margin-bottom:8px;" id="dropzoneIcon">📥</div>
+                    <div id="dropzoneLabel" style="font-weight:700; font-size:14px;">Select or drop a file</div>
+                    <div id="dropzoneSubtext" style="color:#94a3b8; font-size:11px; margin-top:5px;">Supports JPG, PNG, WebP</div>
+                </div>
+
+                <div class="control-box-options" id="dynamicControlsContainer">
+                    <!-- Compress (default) -->
+                    <div class="form-row-item">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+                            <label style="margin:0;">Quality</label>
+                            <span id="sliderMetaValue" style="font-size:12px; color:#6366f1; font-weight:700;">80%</span>
+                        </div>
+                        <input type="range" class="input-element-field" id="ctrlQuality" min="1" max="100" value="80">
+                    </div>
+                </div>
+            </div>
+
+            <div class="workspace-column" style="display:flex; flex-direction:column;">
+                <div class="panel-heading-title">👁️ Preview</div>
+
+                <div class="preview-monitor-frame">
+                    <div class="placeholder-monitor-text" id="previewPlaceholder">
+                        Drop an image or PDF here to get started.
+                    </div>
+
+                    <div class="canvas-source-wrapper" id="previewWrapper">
+                        <div id="cropBoxParentWrapper">
+                            <img id="imageMonitorSource" src="" alt="Preview">
+                            <div class="crop-bounding-selector-box" id="cropBoxOverlay">
+                                <div class="crop-handle nw" data-dir="nw"></div>
+                                <div class="crop-handle ne" data-dir="ne"></div>
+                                <div class="crop-handle sw" data-dir="sw"></div>
+                                <div class="crop-handle se" data-dir="se"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="engine-logs-badge" id="engineStatusBadge">Ready</div>
+                    <div class="progress-bar-wrap" id="progressBarWrap">
+                        <div class="progress-bar-fill" id="progressBarFill"></div>
+                    </div>
+                </div>
+
+                <button class="trigger-action-btn" id="executeProcessBtn">
+                    ⚡ Process &amp; Download
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<footer>
+    &copy; 2026 ImageTools Studio &mdash; All processing happens locally in your browser.
+</footer>
+
+<script>
+    let selectedEngine = 'compress';
+    let loadedImage = null;       // HTMLImageElement
+    let loadedDataUrl = null;     // base64 data URL of loaded image
+    let rawFile = null;           // original File object
+    let baseFilename = 'export';
+
+    // Crop state (in preview-image display pixels)
+    let cropState = { x: 20, y: 20, w: 150, h: 150 };
+    let dragMode = null;  // 'move' | 'nw'|'ne'|'sw'|'se' (resize handle direction)
+    let dragStart = { mx: 0, my: 0, x: 0, y: 0, w: 0, h: 0 };
+
+    // ── Boot ────────────────────────────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', () => {
+        initEvents();
+    });
+
+    function initEvents() {
+        const dropzone = document.getElementById('dropzoneContainer');
+        const fileInput = document.getElementById('studioFileEngine');
+        const processBtn = document.getElementById('executeProcessBtn');
+
+        // Tool card selection
+        document.querySelectorAll('.tool-action-card').forEach(card => {
+            card.addEventListener('click', () => switchStudio(card.getAttribute('data-engine')));
+        });
+
+        processBtn.addEventListener('click', executeTransformation);
+
+        // Dropzone click
+        dropzone.addEventListener('click', () => {
+            fileInput.accept = selectedEngine === 'pdf2img' ? 'application/pdf' : 'image/*';
+            fileInput.multiple = false;
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', e => {
+            if (e.target.files.length > 0) processFileAsset(e.target.files[0]);
+        });
+
+        // Drag & drop
+        ['dragenter', 'dragover'].forEach(ev => {
+            dropzone.addEventListener(ev, e => { e.preventDefault(); dropzone.classList.add('dragover'); }, false);
+        });
+        ['dragleave', 'drop'].forEach(ev => {
+            dropzone.addEventListener(ev, e => { e.preventDefault(); dropzone.classList.remove('dragover'); }, false);
+        });
+        dropzone.addEventListener('drop', e => {
+            const files = e.dataTransfer && e.dataTransfer.files;
+            if (files && files.length > 0) processFileAsset(files[0]);
+        }, false);
+
+        // Slider
+        bindSlider();
+
+        // Global mouse events for crop (avoid clobbering window.onmousemove)
+        window.addEventListener('mousemove', onCropMouseMove);
+        window.addEventListener('mouseup',   onCropMouseUp);
+    }
+
+    function bindSlider() {
+        const slider = document.getElementById('ctrlQuality');
+        const label  = document.getElementById('sliderMetaValue');
+        if (slider && label) {
+            // Sync display on input
+            slider.addEventListener('input', () => { label.textContent = slider.value + '%'; });
+        }
+    }
+
+    // ── Tool switching ───────────────────────────────────────────────────────
+    function switchStudio(engine) {
+        selectedEngine = engine;
+        document.querySelectorAll('.tool-action-card').forEach(c => c.classList.remove('active'));
+        document.getElementById('card-' + engine).classList.add('active');
+
+        resetState();
+        renderControls(engine);
+    }
+
+    function renderControls(engine) {
+        const box = document.getElementById('dynamicControlsContainer');
+
+        if (engine === 'compress') {
+            box.innerHTML = `
+                <div class="form-row-item">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+                        <label style="margin:0;">Quality</label>
+                        <span id="sliderMetaValue" style="font-size:12px; color:#6366f1; font-weight:700;">80%</span>
+                    </div>
+                    <input type="range" class="input-element-field" id="ctrlQuality" min="1" max="100" value="80">
+                </div>`;
+            bindSlider();
+
+        } else if (engine === 'resize') {
+            box.innerHTML = `
+                <div style="display:flex; gap:12px;">
+                    <div class="form-row-item" style="flex:1;">
+                        <label>Width (px)</label>
+                        <input type="number" class="input-element-field" id="ctrlWidth" min="1">
+                    </div>
+                    <div class="form-row-item" style="flex:1;">
+                        <label>Height (px)</label>
+                        <input type="number" class="input-element-field" id="ctrlHeight" min="1">
+                    </div>
+                </div>
+                <div class="form-row-item">
+                    <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+                        <input type="checkbox" id="ctrlAspect" checked>
+                        Lock aspect ratio
+                    </label>
+                </div>`;
+            if (loadedImage) {
+                document.getElementById('ctrlWidth').value  = loadedImage.naturalWidth;
+                document.getElementById('ctrlHeight').value = loadedImage.naturalHeight;
+            }
+            bindAspectLock();
+
+        } else if (engine === 'convert') {
+            box.innerHTML = `
+                <div class="form-row-item">
+                    <label>Output format</label>
+                    <select class="input-element-field" id="ctrlFormat">
+                        <option value="image/jpeg">JPEG</option>
+                        <option value="image/png">PNG (lossless)</option>
+                        <option value="image/webp">WebP</option>
+                    </select>
+                </div>`;
+
+        } else if (engine === 'crop') {
+            box.innerHTML = `<p style="font-size:12px; color:#94a3b8; line-height:1.6;">
+                Drag the blue box on the preview to choose the crop area.
+                Drag corners to resize it. Click <strong style="color:#f8fafc;">Process &amp; Download</strong> to save.
+            </p>`;
+            if (loadedImage) setupCropBox();
+
+        } else if (engine === 'pdf2img') {
+            document.getElementById('dropzoneSubtext').textContent = 'Accepts PDF files';
+            box.innerHTML = `<p style="font-size:12px; color:#94a3b8; line-height:1.6;">
+                Each page of the PDF will be exported as a separate JPG file.
+            </p>`;
+
+        } else if (engine === 'img2pdf') {
+            box.innerHTML = `<p style="font-size:12px; color:#94a3b8; line-height:1.6;">
+                Upload an image to wrap it inside a PDF document sized to fit the image.
+            </p>`;
+        }
+    }
+
+    function bindAspectLock() {
+        const wInput = document.getElementById('ctrlWidth');
+        const hInput = document.getElementById('ctrlHeight');
+        const lock   = document.getElementById('ctrlAspect');
+        if (!wInput || !hInput || !lock) return;
+
+        const ratio = loadedImage ? loadedImage.naturalWidth / loadedImage.naturalHeight : 1;
+
+        wInput.addEventListener('input', () => {
+            if (lock.checked) hInput.value = Math.round(wInput.value / ratio);
+        });
+        hInput.addEventListener('input', () => {
+            if (lock.checked) wInput.value = Math.round(hInput.value * ratio);
+        });
+    }
+
+    // ── State reset ──────────────────────────────────────────────────────────
+    function resetState() {
+        document.getElementById('studioFileEngine').value = '';
+        document.getElementById('dropzoneIcon').textContent = '📥';
+        document.getElementById('dropzoneLabel').textContent = 'Select or drop a file';
+        document.getElementById('dropzoneSubtext').textContent =
+            selectedEngine === 'pdf2img' ? 'Accepts PDF files' : 'Supports JPG, PNG, WebP';
+        document.getElementById('previewPlaceholder').style.display = 'block';
+        document.getElementById('previewWrapper').style.display = 'none';
+        document.getElementById('engineStatusBadge').style.display = 'none';
+        document.getElementById('cropBoxOverlay').style.display = 'none';
+        hideProgress();
+        loadedImage  = null;
+        loadedDataUrl = null;
+        rawFile      = null;
+        dragMode     = null;
+        cropState    = { x: 20, y: 20, w: 150, h: 150 };
+    }
+
+    // ── File loading ─────────────────────────────────────────────────────────
+    function processFileAsset(file) {
+        rawFile      = file;
+        baseFilename = file.name.replace(/\.[^.]+$/, '');
+
+        document.getElementById('dropzoneIcon').textContent  = '✅';
+        document.getElementById('dropzoneLabel').textContent = file.name;
+        document.getElementById('dropzoneSubtext').textContent =
+            (file.size / 1024).toFixed(1) + ' KB';
+
+        // PDF branch
+        if (file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')) {
+            if (selectedEngine !== 'pdf2img') {
+                alert('Switch to "PDF → Image" to work with PDF files.');
+                resetState();
+                return;
+            }
+            showPdfPlaceholder();
+            return;
+        }
+
+        // Image branch
+        const reader = new FileReader();
+        reader.onload = e => {
+            loadedDataUrl = e.target.result;
+            const img = new Image();
+            img.onload = () => {
+                loadedImage = img;
+
+                document.getElementById('imageMonitorSource').src = loadedDataUrl;
+                document.getElementById('previewPlaceholder').style.display = 'none';
+                document.getElementById('previewWrapper').style.display = 'block';
+
+                const badge = document.getElementById('engineStatusBadge');
+                badge.textContent = img.naturalWidth + ' × ' + img.naturalHeight + ' px';
+                badge.style.display = 'inline-block';
+
+                if (selectedEngine === 'resize') {
+                    const w = document.getElementById('ctrlWidth');
+                    const h = document.getElementById('ctrlHeight');
+                    if (w) w.value = img.naturalWidth;
+                    if (h) h.value = img.naturalHeight;
+                }
+
+                if (selectedEngine === 'crop') setupCropBox();
+            };
+            img.src = loadedDataUrl;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function showPdfPlaceholder() {
+        document.getElementById('previewPlaceholder').style.display = 'none';
+        document.getElementById('previewWrapper').style.display = 'block';
+        // Safe inline SVG (no tricky quote escaping)
+        const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 24 24">
+            <rect width="24" height="24" rx="3" fill="#1e293b"/>
+            <text x="12" y="10" text-anchor="middle" font-size="4" fill="#6366f1" font-family="sans-serif" font-weight="bold">PDF</text>
+            <text x="12" y="16" text-anchor="middle" font-size="2.2" fill="#94a3b8" font-family="sans-serif">Loaded &amp; ready</text>
+        </svg>`;
+        const blob = new Blob([svg], { type: 'image/svg+xml' });
+        document.getElementById('imageMonitorSource').src = URL.createObjectURL(blob);
+
+        const badge = document.getElementById('engineStatusBadge');
+        badge.textContent = 'PDF loaded — click Process to export pages';
+        badge.style.display = 'inline-block';
+    }
+
+    // ── Crop box interaction ─────────────────────────────────────────────────
+    function setupCropBox() {
+        const overlay = document.getElementById('cropBoxOverlay');
+        const parent  = document.getElementById('cropBoxParentWrapper');
+
+        // Wait a tick for the image to be laid out
+        requestAnimationFrame(() => {
+            const maxW = parent.clientWidth;
+            const maxH = document.getElementById('imageMonitorSource').clientHeight;
+
+            // Default: 60 % of display size, centred
+            cropState.w = Math.round(maxW * 0.6);
+            cropState.h = Math.round(maxH * 0.6);
+            cropState.x = Math.round((maxW - cropState.w) / 2);
+            cropState.y = Math.round((maxH - cropState.h) / 2);
+
+            applyCropBoxStyle();
+            overlay.style.display = 'block';
+        });
+
+        // Move drag starts on the overlay itself (not handles)
+        overlay.addEventListener('mousedown', e => {
+            if (e.target.classList.contains('crop-handle')) return; // handled separately
+            dragMode = 'move';
+            dragStart = { mx: e.clientX, my: e.clientY, ...cropState };
+            e.preventDefault();
+        });
+
+        // Resize drag starts on handles
+        overlay.querySelectorAll('.crop-handle').forEach(handle => {
+            handle.addEventListener('mousedown', e => {
+                dragMode = handle.dataset.dir;
+                dragStart = { mx: e.clientX, my: e.clientY, ...cropState };
+                e.preventDefault();
+                e.stopPropagation();
+            });
+        });
+    }
+
+    function onCropMouseMove(e) {
+        if (!dragMode) return;
+        const parent  = document.getElementById('cropBoxParentWrapper');
+        const imgEl   = document.getElementById('imageMonitorSource');
+        const maxW    = parent.clientWidth;
+        const maxH    = imgEl.clientHeight;
+        const MIN     = 30;
+
+        const dx = e.clientX - dragStart.mx;
+        const dy = e.clientY - dragStart.my;
+
+        let { x, y, w, h } = dragStart;
+
+        if (dragMode === 'move') {
+            x = clamp(x + dx, 0, maxW - w);
+            y = clamp(y + dy, 0, maxH - h);
+        } else {
+            if (dragMode.includes('e')) { w = clamp(w + dx, MIN, maxW - x); }
+            if (dragMode.includes('s')) { h = clamp(h + dy, MIN, maxH - y); }
+            if (dragMode.includes('w')) {
+                const newW = clamp(w - dx, MIN, x + w);
+                x = x + w - newW;
+                w = newW;
+            }
+            if (dragMode.includes('n')) {
+                const newH = clamp(h - dy, MIN, y + h);
+                y = y + h - newH;
+                h = newH;
+            }
+        }
+
+        cropState = { x, y, w, h };
+        applyCropBoxStyle();
+    }
+
+    function onCropMouseUp() {
+        dragMode = null;
+    }
+
+    function applyCropBoxStyle() {
+        const overlay = document.getElementById('cropBoxOverlay');
+        overlay.style.left   = cropState.x + 'px';
+        overlay.style.top    = cropState.y + 'px';
+        overlay.style.width  = cropState.w + 'px';
+        overlay.style.height = cropState.h + 'px';
+    }
+
+    function clamp(val, min, max) { return Math.max(min, Math.min(max, val)); }
+
+    // ── Progress helpers ─────────────────────────────────────────────────────
+    function showProgress(pct) {
+        const wrap = document.getElementById('progressBarWrap');
+        const fill = document.getElementById('progressBarFill');
+        wrap.style.display = 'block';
+        fill.style.width = pct + '%';
+    }
+    function hideProgress() {
+        document.getElementById('progressBarWrap').style.display = 'none';
+        document.getElementById('progressBarFill').style.width = '0%';
+    }
+
+    // ── Main transform dispatcher ────────────────────────────────────────────
+    async function executeTransformation() {
+        if (selectedEngine === 'pdf2img') {
+            if (!rawFile) return alert('Please upload a PDF file first.');
+            await executePdfToImages();
+            return;
+        }
+
+        if (!loadedImage) return alert('Please upload an image file first.');
+
+        if (selectedEngine === 'img2pdf') { executeImgToPdf(); return; }
+
+        const canvas = document.createElement('canvas');
+        const ctx    = canvas.getContext('2d');
+
+        if (selectedEngine === 'crop') {
+            const monitorImg = document.getElementById('imageMonitorSource');
+            const scaleX = loadedImage.naturalWidth  / monitorImg.clientWidth;
+            const scaleY = loadedImage.naturalHeight / monitorImg.clientHeight;
+
+            const sx = cropState.x * scaleX;
+            const sy = cropState.y * scaleY;
+            const sw = cropState.w * scaleX;
+            const sh = cropState.h * scaleY;
+
+            canvas.width  = Math.round(sw);
+            canvas.height = Math.round(sh);
+            ctx.drawImage(loadedImage, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
+            download(canvas.toDataURL('image/jpeg', 0.92), baseFilename + '_cropped.jpg');
+            return;
+        }
+
+        let width   = loadedImage.naturalWidth;
+        let height  = loadedImage.naturalHeight;
+        let mime    = 'image/jpeg';
+        let quality = 0.92;
+
+        if (selectedEngine === 'resize') {
+            width  = parseInt(document.getElementById('ctrlWidth').value,  10) || width;
+            height = parseInt(document.getElementById('ctrlHeight').value, 10) || height;
+        }
+        if (selectedEngine === 'compress') {
+            // slider value IS the quality percentage (1–100)
+            quality = parseInt(document.getElementById('ctrlQuality').value, 10) / 100;
+        }
+        if (selectedEngine === 'convert') {
+            mime = document.getElementById('ctrlFormat').value;
+            // PNG is lossless; quality param is ignored by browsers for png
+            quality = mime === 'image/png' ? 1 : 0.92;
+        }
+
+        canvas.width  = width;
+        canvas.height = height;
+        ctx.drawImage(loadedImage, 0, 0, width, height);
+
+        const ext = mime.split('/')[1].replace('jpeg', 'jpg');
+        download(canvas.toDataURL(mime, quality), baseFilename + '_output.' + ext);
+    }
+
+    // ── PDF → Images ─────────────────────────────────────────────────────────
+    async function executePdfToImages() {
+        if (typeof pdfjsLib === 'undefined') {
+            return alert('PDF.js library is still loading. Please wait a moment and try again.');
+        }
+
+        const btn = document.getElementById('executeProcessBtn');
+        btn.disabled = true;
+        btn.textContent = 'Processing…';
+
+        try {
+            pdfjsLib.GlobalWorkerOptions.workerSrc =
+                'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+
+            const arrayBuffer = await rawFile.arrayBuffer();
+            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+            const totalPages = pdf.numPages;
+
+            for (let i = 1; i <= totalPages; i++) {
+                const pct = Math.round(((i - 1) / totalPages) * 100);
+                showProgress(pct);
+
+                const page = await pdf.getPage(i);
+                const viewport = page.getViewport({ scale: 2.0 });
+                const canvas   = document.createElement('canvas');
+                canvas.width   = viewport.width;
+                canvas.height  = viewport.height;
+                await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
+
+                const suffix = totalPages === 1 ? '' : '_page' + String(i).padStart(3, '0');
+                download(canvas.toDataURL('image/jpeg', 0.92), baseFilename + suffix + '.jpg');
+
+                // Small delay so the browser can schedule the download
+                await new Promise(r => setTimeout(r, 150));
+            }
+
+            showProgress(100);
+            const badge = document.getElementById('engineStatusBadge');
+            badge.textContent = totalPages + ' page' + (totalPages > 1 ? 's' : '') + ' exported';
+            badge.style.display = 'inline-block';
+        } catch (err) {
+            console.error(err);
+            alert('PDF processing failed: ' + err.message);
+        } finally {
+            btn.disabled = false;
+            btn.textContent = '⚡ Process & Download';
+            setTimeout(hideProgress, 1500);
+        }
+    }
+
+    // ── Image → PDF ───────────────────────────────────────────────────────────
+    function executeImgToPdf() {
+        if (!window.jspdf || !window.jspdf.jsPDF) {
+            return alert('jsPDF is still loading. Please wait a moment and try again.');
+        }
+        try {
+            const { jsPDF } = window.jspdf;
+            const imgW = loadedImage.naturalWidth;
+            const imgH = loadedImage.naturalHeight;
+            const orient = imgW >= imgH ? 'l' : 'p';
+
+            const pdf = new jsPDF({ orientation: orient, unit: 'px', format: [imgW, imgH] });
+            pdf.addImage(loadedDataUrl, 'JPEG', 0, 0, imgW, imgH);
+            pdf.save(baseFilename + '.pdf');
+        } catch (err) {
+            console.error(err);
+            alert('PDF creation failed: ' + err.message);
+        }
+    }
+
+    // ── Download helper ───────────────────────────────────────────────────────
+    function download(dataUrl, filename) {
+        const a = document.createElement('a');
+        a.download = filename;
+        a.href     = dataUrl;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
+</script>
+</body>
+</html>
